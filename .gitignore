@@ -1,3 +1,5 @@
 /build/*
-/logs/*.log
+/logs/
+/cmd/logs/
+/cmd/cmd.exe
 /logs/*.log_symlink

@@ -1,32 +1,30 @@
 package main
 
 import (
-	"fmt"
 	"github.com/urfave/cli"
 	"heji-server/utils"
 	"os"
+	"sync"
 )
 
 var log = utils.Log
 
-const appName = "HeJi"
-const appAbout = "HeJi®"
+const appName = "合記"
+const appAbout = "                                           \n    _/    _/  _/_/_/_/        _/  _/_/_/   \n   _/    _/  _/              _/    _/      \n  _/_/_/_/  _/_/_/          _/    _/       \n _/    _/  _/        _/    _/    _/        \n_/    _/  _/_/_/_/    _/_/    _/_/_/       \n                                           "
 const appEdition = "ce"
-const appDescription = "heji-server"
-const appCopyright = "(c) 2023-2024 HeJi UG. All rights reserved."
+const appDescription = "合記服务节点\n\t去中心化|多人同时记账|账单统计可视化|账单区分权限|账单导入|账单导出"
+const appCopyright = "(c) 2023-2024 hao88.cloud. All rights reserved."
 
 var version = "development"
 
 func main() {
-	log.Println("Start heji server")
-	pinter()
 	defer func() {
 		if r := recover(); r != nil {
 			log.Error(r)
 			os.Exit(1)
 		}
 	}()
-
+	var wg sync.WaitGroup
 	app := cli.NewApp()
 	app.Name = appName
 	app.Usage = appAbout
@@ -35,15 +33,13 @@ func main() {
 	app.Copyright = appCopyright
 	app.EnableBashCompletion = true
 	app.Commands = Commands
-	app.Action = func(*cli.Context) error {
-		fmt.Println("cli do action!")
-		return nil
+	app.Action = func(ctx *cli.Context) {
+		println("do action...")
+		startAction(ctx)
 	}
-
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
-}
-func pinter() {
-	log.Println("this is pinter func")
+	wg.Wait()
+	log.Debug("main thread end!")
 }

@@ -16,6 +16,7 @@ const logPath = "logs/"
 var Log *logrus.Logger
 
 type mineFormatter struct{}
+type consoleFormatter struct{}
 
 func init() {
 	Log = create()
@@ -26,10 +27,11 @@ func create() *logrus.Logger {
 	}
 	Log = logrus.New()
 	Log.Formatter = new(logrus.JSONFormatter)
-	Log.Formatter = new(logrus.TextFormatter)                   //default
-	Log.Formatter.(*logrus.TextFormatter).DisableColors = false // remove colors
+	Log.Formatter = new(logrus.TextFormatter) //default
 	Log.Level = logrus.TraceLevel
 	Log.Out = os.Stdout
+	//控制台输出的格式
+	Log.SetFormatter(&consoleFormatter{})
 	os.Mkdir(logPath, os.ModePerm) //在运行程序的目录下创建logs目录
 	writer, _ := rotatelogs.New(
 		logPath+todayFileName(),
@@ -45,9 +47,10 @@ func create() *logrus.Logger {
 		logrus.ErrorLevel: writer,
 		logrus.PanicLevel: writer,
 	}
+	//启用调用者信息
 	Log.SetReportCaller(true)
+	//设定输出文件的格式
 	hook := lfshook.NewHook(writerMap, &mineFormatter{})
-
 	Log.AddHook(hook)
 	return Log
 }
@@ -55,7 +58,34 @@ func create() *logrus.Logger {
 func todayFileName() string {
 	return time.Now().Format(TimeFormatDay) + ".log"
 }
-
+func (s *consoleFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	var b *bytes.Buffer
+	if entry.Buffer != nil {
+		b = entry.Buffer
+	} else {
+		b = &bytes.Buffer{}
+	}
+	timeStamp := entry.Time.Format(TimeFormat)
+	var newLog string
+	if entry.HasCaller() {
+		fName := filepath.Base(entry.Caller.File)
+		//newLog = fmt.Sprintf("[%s] %s %s:%d %s\n",
+		//	entry.Level,
+		//	entry.Caller.Function,
+		//	fName,
+		//	entry.Caller.Line,
+		//	entry.Message)
+		newLog = fmt.Sprintf("[%s] %s %s:%d:%s\n", entry.Level, entry.Caller.Function, fName, entry.Caller.Line, entry.Message)
+	} else {
+		newLog = fmt.Sprintf("[%s][%s] %s\n",
+			timeStamp,
+			entry.Level,
+			entry.Message,
+		)
+	}
+	b.WriteString(newLog)
+	return b.Bytes(), nil
+}
 func (s *mineFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var b *bytes.Buffer
 	if entry.Buffer != nil {
@@ -74,7 +104,6 @@ func (s *mineFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			entry.Caller.Line,
 			entry.Caller.Function,
 			entry.Message)
-		//newLog = fmt.Sprintf("%s-%s:%s\n", timeStamp, fName, entry.Message)
 	} else {
 		newLog = fmt.Sprintf("[%s][%s] %s\n",
 			timeStamp,

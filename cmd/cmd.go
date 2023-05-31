@@ -1,6 +1,10 @@
 package main
 
-import "github.com/urfave/cli"
+import (
+	"context"
+	"github.com/urfave/cli"
+	"heji-server/internal/server"
+)
 
 var Commands = []cli.Command{
 	StartCommand,
@@ -8,11 +12,20 @@ var Commands = []cli.Command{
 var StartCommand = cli.Command{
 	Name:    "start",
 	Aliases: []string{"up"},
-	Usage:   "Starts the Web server",
+	Usage:   "启动Web服务",
 	Flags:   startFlags,
-	Action: func(ctx *cli.Context) {
-		log.Printf("start")
-	},
+	Action:  startAction,
+}
+
+func startAction(ctx *cli.Context) error {
+	conf, err := InitConfig(ctx)
+	if err != nil {
+		return err
+	}
+	log.Printf("start")
+	cctx, _ := context.WithCancel(context.Background())
+	server.Start(cctx, conf)
+	return nil
 }
 
 // startFlags specifies the start command parameters.

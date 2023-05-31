@@ -6,7 +6,7 @@ import (
 )
 
 func Login(router *gin.RouterGroup) {
-	router.POST("/user/login", func(c *gin.Context) {
+	router.GET("/user/login", func(c *gin.Context) {
 
 		c.JSONP(http.StatusOK, "username = test")
 	})
