@@ -12,7 +12,7 @@ var Commands = []cli.Command{
 var StartCommand = cli.Command{
 	Name:    "start",
 	Aliases: []string{"up"},
-	Usage:   "启动Web服务",
+	Usage:   "Start server",
 	Flags:   startFlags,
 	Action:  startAction,
 }
@@ -22,7 +22,6 @@ func startAction(ctx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("start")
 	cctx, _ := context.WithCancel(context.Background())
 	server.Start(cctx, conf)
 	return nil

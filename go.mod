@@ -3,6 +3,7 @@ module heji-server
 go 1.19
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/leandro-lugaresi/hub v1.1.1

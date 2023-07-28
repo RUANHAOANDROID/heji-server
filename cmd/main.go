@@ -9,7 +9,7 @@ import (
 
 var log = utils.Log
 
-const appName = "合記"
+const appName = "heji"
 const appAbout = "                                           \n    _/    _/  _/_/_/_/        _/  _/_/_/   \n   _/    _/  _/              _/    _/      \n  _/_/_/_/  _/_/_/          _/    _/       \n _/    _/  _/        _/    _/    _/        \n_/    _/  _/_/_/_/    _/_/    _/_/_/       \n                                           "
 const appEdition = "ce"
 const appDescription = "合記服务节点\n\t去中心化|多人同时记账|账单统计可视化|账单区分权限|账单导入|账单导出"
@@ -41,5 +41,4 @@ func main() {
 		log.Fatal(err)
 	}
 	wg.Wait()
-	log.Debug("main thread end!")
 }

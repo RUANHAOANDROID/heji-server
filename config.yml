@@ -1,0 +1,10 @@
+mongodb :
+  host : hao88.cloud
+  port : 8082
+  database : heji
+  username : db_user
+  password : HaoHejiServer0214!
+
+jwt :
+  secret : ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
+  remember_me : 5 
