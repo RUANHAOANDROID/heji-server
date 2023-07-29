@@ -1,5 +1,7 @@
 package server
 
-import "heji-server/utils"
+import (
+	"heji-server/internal/utils"
+)
 
 var log = utils.Log

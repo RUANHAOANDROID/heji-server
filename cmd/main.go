@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/urfave/cli"
-	"heji-server/utils"
+	"heji-server/internal/utils"
 	"os"
 	"sync"
 )
