@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/urfave/cli"
 	"gorm.io/gorm"
-	"heji-server/utils"
+	"heji-server/internal/utils"
 	"sync"
 )
 
