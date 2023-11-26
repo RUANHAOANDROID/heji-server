@@ -7,29 +7,38 @@ import (
 	"heji-server/internal/config"
 	"log"
 	"net/http"
+	"time"
 )
 
 var upgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
 	return true
 }} // use default options
-var wsc *websocket.Conn
+var wsConn *websocket.Conn
 
-func HandlerHoldWS(r *gin.RouterGroup, config *config.Config) {
-	r.GET("/sync", func(c *gin.Context) {
-		wsConn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+var wsTimeout = 90 * time.Second
+
+func WebSocket(router *gin.RouterGroup, config *config.Config) {
+	router.GET("/ws", func(c *gin.Context) {
+		w := c.Writer
+		r := c.Request
+		wsConn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			log.Print("upgrade:", err)
 			return
 		}
-		wsc = wsConn
-		defer wsc.Close()
-		wsc.SetCloseHandler(func(code int, text string) error {
+		//var writeMutex sync.Mutex
+
+		defer wsConn.Close()
+		//connId := pkg.UUID()
+		// 监听关闭
+		wsConn.SetCloseHandler(func(code int, text string) error {
 			println("conn closed")
 			wsConn.CloseHandler()
 			wsConn.Close()
 			err = errors.New(text)
 			return err
 		})
+		//go wsWriter(ws, &writeMutex, connId)
 		for {
 			if err != nil {
 				break
