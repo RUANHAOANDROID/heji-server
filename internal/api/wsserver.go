@@ -15,7 +15,7 @@ var upgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
 var wsc *websocket.Conn
 
 func HandlerHoldWS(r *gin.RouterGroup, config *config.Config) {
-	r.GET("/flow", func(c *gin.Context) {
+	r.GET("/sync", func(c *gin.Context) {
 		wsConn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
 			log.Print("upgrade:", err)
