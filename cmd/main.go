@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"github.com/urfave/cli"
@@ -17,7 +17,7 @@ const appCopyright = "(c) 2023-2024 hao88.cloud. All rights reserved."
 
 var version = "development"
 
-func main() {
+func Main(args []string) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Error(r)
