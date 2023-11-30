@@ -62,3 +62,6 @@ func handlerMessage(wsConn *websocket.Conn) {
 		return
 	}
 }
+func SendWsMsg() {
+
+}

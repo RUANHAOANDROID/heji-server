@@ -1,0 +1,35 @@
+syntax = "proto3";
+option go_package = "../proto";
+option java_package = "com.rh.heji.proto";
+package com.heji.proto;
+
+enum Types{
+    ADD_BILL =0;
+}
+message WsMsg{
+    string id=1;
+    Types type=2;
+    uint64 timestamp=3;
+    string fromId=4;
+    string toId=5;
+}
+//BOOK -----------------------
+message UpdateBook{
+    repeated WsMsg ws_msg = 1;
+    string content =2;
+}
+// BILL ----------------------
+message AddBill{
+    repeated WsMsg ws_msg = 1;
+    string content=2;
+}
+message DeleteBill{
+    repeated WsMsg ws_msg=1;
+    message Content{
+        string billId=2;
+    }
+}
+message UpdateBill{
+    repeated WsMsg ws_msg=1;
+    string content =2;
+}
