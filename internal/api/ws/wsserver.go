@@ -2,7 +2,10 @@ package ws
 
 import (
 	"fmt"
+	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/websocket"
+	proto2 "heji-server/proto"
+	"log"
 	"net/http"
 	"sync"
 )
@@ -17,6 +20,8 @@ var hub = WebSocketHub{
 }
 
 var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
 		return true
 	},
@@ -35,8 +40,18 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	hub.mutex.Unlock()
 
 	for {
-		var message map[string]interface{}
-		err := conn.ReadJSON(&message)
+		msgType, p, err := conn.ReadMessage()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		switch msgType {
+		case proto2.Types_ADD_BILL.Type():
+		default:
+
+		}
+		var message proto2.WsMsg
+		err = proto.Unmarshal(p & mess)
 		if err != nil {
 			hub.mutex.Lock()
 			delete(hub.clients, conn)

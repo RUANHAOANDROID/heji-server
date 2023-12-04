@@ -6,12 +6,20 @@ package com.heji.proto;
 enum Types{
     ADD_BILL =0;
 }
+
 message WsMsg{
     string id=1;
-    Types type=2;
-    uint64 timestamp=3;
-    string fromId=4;
-    string toId=5;
+    uint64 timestamp=2;
+    string fromId=3;
+    string toId=4;
+}
+enum Status{
+    SUCCESS =0;
+    ERROR =1;
+}
+message ACK{
+    WsMsg ws_msg = 1;
+    Status  status =2;
 }
 //BOOK -----------------------
 message UpdateBook{
@@ -19,15 +27,21 @@ message UpdateBook{
     string content =2;
 }
 // BILL ----------------------
+// BILL ----------------------
 message AddBill{
     repeated WsMsg ws_msg = 1;
-    string content=2;
+    string billID=2;
+    string bookId=3;
+    uint64 money=4;
+    string crtUser=5;
+    uint64 time=6;
+    string category=7;
+    uint32 type=8;
+    string remark =9;
 }
 message DeleteBill{
     repeated WsMsg ws_msg=1;
-    message Content{
-        string billId=2;
-    }
+    string billId=2;
 }
 message UpdateBill{
     repeated WsMsg ws_msg=1;
