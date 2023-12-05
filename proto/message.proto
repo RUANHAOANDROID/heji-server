@@ -3,10 +3,6 @@ option go_package = "../proto";
 option java_package = "com.rh.heji.proto";
 package com.heji.proto;
 
-enum Types{
-    ADD_BILL =0;
-}
-
 message WsMsg{
     string id=1;
     uint64 timestamp=2;

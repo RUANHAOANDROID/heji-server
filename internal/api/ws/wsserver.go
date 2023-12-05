@@ -2,9 +2,8 @@ package ws
 
 import (
 	"fmt"
-	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/websocket"
-	proto2 "heji-server/proto"
+	handler2 "heji-server/internal/api/ws/handler"
 	"log"
 	"net/http"
 	"sync"
@@ -45,22 +44,15 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
-		switch msgType {
-		case proto2.Types_ADD_BILL.Type():
-		default:
+		handler := handler2.CreateHandler(msgType)
+		handler.HandleMessage(conn, p)
 
-		}
-		var message proto2.WsMsg
-		err = proto.Unmarshal(p & mess)
 		if err != nil {
 			hub.mutex.Lock()
 			delete(hub.clients, conn)
 			hub.mutex.Unlock()
 			break
 		}
-
-		// 在实际应用中，根据接收到的消息进行相应的处理，例如更新账本、广播给其他用户等
-		fmt.Printf("Received message from client: %+v\n", message)
 	}
 }
 
