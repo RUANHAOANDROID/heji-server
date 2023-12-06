@@ -13,7 +13,7 @@ func registerRoutes(router *gin.Engine, conf *config.Config) {
 	//开启重定向
 	router.RedirectTrailingSlash = true
 	registerStaticRoutes(router, conf)
-	api.HandlerHoldWS(APIv1, conf)
+	api.WebSocket(APIv1, conf)
 	api.Login(APIv1)
 	log.Debug("路由注册完毕")
 }

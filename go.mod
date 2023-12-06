@@ -6,6 +6,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang/protobuf v1.5.3
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/websocket v1.5.0
 	github.com/leandro-lugaresi/hub v1.1.1
@@ -16,6 +17,7 @@ require (
 	github.com/spf13/viper v1.17.0
 	github.com/urfave/cli v1.22.13
 	go.mongodb.org/mongo-driver v1.12.0
+	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.25.1
 )
@@ -77,6 +79,5 @@ require (
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
