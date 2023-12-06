@@ -26,41 +26,50 @@ var (
 
 func WebSocket(router *gin.RouterGroup, config *config.Config) {
 	router.GET("/ws", func(c *gin.Context) {
-		w := c.Writer
-		r := c.Request
-		conn, err := upgrader.Upgrade(w, r, nil)
-		if err != nil {
-			log.Print("upgrade:", err)
-			return
-		}
-		defer conn.Close()
-		// 监听关闭
-		conn.SetCloseHandler(func(code int, text string) error {
-			println("conn closed")
-			conn.CloseHandler()
-			conn.Close()
-			err = errors.New(text)
-			removeConnection(conn)
-			return err
-		})
-		//go wsWriter(ws, &writeMutex, connId)
-		for {
-			msgType, p, err := conn.ReadMessage()
-			if err != nil {
-				log.Println(err)
-				return
-			}
-			handler := handler2.CreateHandler(msgType)
-			handler.HandleMessage(conn, p)
-		}
+		handleConnections(c)
 	})
 }
-func addConnection(conn *websocket.Conn, userID string) {
+
+func handleConnections(c *gin.Context) {
+	userID := c.GetHeader("X-User-ID")
+	if userID == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": "User ID is required"})
+		return
+	}
+	w := c.Writer
+	r := c.Request
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Print("upgrade:", err)
+		return
+	}
+	defer conn.Close()
+	addConn(conn, userID)
+	// 监听关闭
+	conn.SetCloseHandler(func(code int, text string) error {
+		conn.CloseHandler()
+		conn.Close()
+		err = errors.New(text)
+		removeConn(conn)
+		return err
+	})
+	//go wsWriter(ws, &writeMutex, connId)
+	for {
+		msgType, p, err := conn.ReadMessage()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		handler := handler2.CreateHandler(msgType)
+		handler.HandleMessage(conn, p)
+	}
+}
+func addConn(conn *websocket.Conn, userID string) {
 	clientsMutex.Lock()
 	clients[conn] = userID
 	clientsMutex.Unlock()
 }
-func removeConnection(conn *websocket.Conn) {
+func removeConn(conn *websocket.Conn) {
 	clientsMutex.Lock()
 	delete(clients, conn)
 	clientsMutex.Unlock()
