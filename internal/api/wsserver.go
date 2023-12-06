@@ -12,11 +12,6 @@ import (
 	"sync"
 )
 
-type WebSocketHub struct {
-	clients map[*websocket.Conn]bool
-	mutex   sync.Mutex
-}
-
 var (
 	upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
@@ -25,7 +20,6 @@ var (
 			return true
 		},
 	}
-
 	clients      = make(map[*websocket.Conn]string)
 	clientsMutex sync.Mutex
 )
@@ -72,6 +66,7 @@ func removeConnection(conn *websocket.Conn) {
 	clientsMutex.Unlock()
 	conn.Close()
 }
+
 func pushMessageToUser(userId string, messageType int, message []byte) {
 	clientsMutex.Lock()
 	defer clientsMutex.Unlock()
@@ -85,6 +80,7 @@ func pushMessageToUser(userId string, messageType int, message []byte) {
 		}
 	}
 }
+
 func broadcastMessage(message map[string]interface{}) {
 	clientsMutex.Lock()
 	defer clientsMutex.Unlock()
