@@ -3,11 +3,8 @@ package config
 import (
 	"github.com/urfave/cli"
 	"gorm.io/gorm"
-	"heji-server/internal/utils"
 	"sync"
 )
-
-var log = utils.Log
 
 // Config app config
 type Config struct {
@@ -37,6 +34,5 @@ func NewConfig(ctx *cli.Context) *Config {
 	return c
 }
 func (c *Config) Init() error {
-	log.Debugln("config init:", c.model, c.options)
 	return nil
 }

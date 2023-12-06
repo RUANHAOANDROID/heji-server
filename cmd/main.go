@@ -2,12 +2,13 @@ package cmd
 
 import (
 	"github.com/urfave/cli"
-	"heji-server/internal/utils"
+	"heji-server/pkg"
+
 	"os"
 	"sync"
 )
 
-var log = utils.Log
+var log = pkg.Log
 
 const appName = "heji"
 const appAbout = "                                           \n    _/    _/  _/_/_/_/        _/  _/_/_/   \n   _/    _/  _/              _/    _/      \n  _/_/_/_/  _/_/_/          _/    _/       \n _/    _/  _/        _/    _/    _/        \n_/    _/  _/_/_/_/    _/_/    _/_/_/       \n                                           "

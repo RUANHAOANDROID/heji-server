@@ -5,6 +5,10 @@ app:
 server:
   host: 127.0.0.1
   port: "8888"
+
+options:
+  db: mongo
+
 mongodb :
   host : hao88.cloud
   port : 8082

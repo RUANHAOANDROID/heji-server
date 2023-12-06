@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	handler2 "heji-server/internal/api/ws/handler"
@@ -40,7 +39,7 @@ func handleConnections(c *gin.Context) {
 	r := c.Request
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Print("upgrade:", err)
+		logger.Print("upgrade:", err)
 		return
 	}
 	defer conn.Close()
@@ -84,7 +83,7 @@ func pushMessageToUser(userId string, messageType int, message []byte) {
 		if clientID == userId {
 			err := client.WriteMessage(messageType, message)
 			if err != nil {
-				fmt.Println(err)
+				logger.Println(err)
 			}
 		}
 	}
@@ -96,7 +95,7 @@ func broadcastMessage(message map[string]interface{}) {
 	for client := range clients {
 		err := client.WriteJSON(message)
 		if err != nil {
-			fmt.Println(err)
+			logger.Println(err)
 		}
 	}
 }
