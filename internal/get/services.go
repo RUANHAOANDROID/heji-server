@@ -1,6 +1,8 @@
 package get
 
-import "heji-server/internal/config"
+import (
+	"heji-server/config"
+)
 
 var conf *config.Config
 
