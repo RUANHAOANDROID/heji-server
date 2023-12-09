@@ -1,23 +1,22 @@
 app:
-  appname: sync-server
-  describe: sync server
-  version: 1.3.8
-server:
-  host: 127.0.0.1
-  port: "8888"
+  name: 'go-clean-template'
+  version: '1.0.0'
+
+http:
+  port: '8080'
 
 options:
   db: mongo
 
-mongodb :
-  host : hao88.cloud
-  port : 8082
-  database : heji
-  username : db_user
-  password : HaoHejiServer0214!
+mongo:
+  host: hao88.cloud
+  port: 8082
+  database: heji
+  username: db_user
+  password: HaoHejiServer0214!
 
-jwt :
-  secret : ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
-  remember_me : 5
+jwt:
+  secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
+  remember_me: 5
 
 

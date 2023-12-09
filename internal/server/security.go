@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"heji-server/internal/config"
+	"heji-server/config"
 	"heji-server/internal/server/header"
 )
 

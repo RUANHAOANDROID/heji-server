@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/urfave/cli"
+	"heji-server/config"
+	"heji-server/internal/server"
 	"heji-server/pkg"
+	"time"
 
 	"os"
-	"sync"
 )
 
 var log = pkg.Log
@@ -25,21 +26,13 @@ func Main(args []string) {
 			os.Exit(1)
 		}
 	}()
-	var wg sync.WaitGroup
-	app := cli.NewApp()
-	app.Name = appName
-	app.Usage = appAbout
-	app.Description = appDescription
-	app.Version = version
-	app.Copyright = appCopyright
-	app.EnableBashCompletion = true
-	app.Commands = Commands
-	app.Action = func(ctx *cli.Context) {
-		println("do action...")
-		startAction(ctx)
-	}
-	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
-	}
-	wg.Wait()
+	conf := config.Load()
+	start := time.Now()
+	log.Info(start)
+	log.Info(appName)
+	log.Info(appAbout)
+	log.Info(appEdition)
+	log.Info(appDescription)
+	log.Info(appCopyright)
+	server.Start(conf)
 }

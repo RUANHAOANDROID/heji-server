@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"heji-server/config"
 	"heji-server/internal/api"
-	"heji-server/internal/config"
 )
 
 var APIv1 *gin.RouterGroup
