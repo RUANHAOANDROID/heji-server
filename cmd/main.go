@@ -28,6 +28,7 @@ func Main(args []string) {
 	}()
 	conf := config.Load()
 	start := time.Now()
+	log.Info(args)
 	log.Info(start)
 	log.Info(appName)
 	log.Info(appAbout)
