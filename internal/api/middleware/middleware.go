@@ -39,7 +39,7 @@ func ErrorHandler() gin.HandlerFunc {
 		}
 	}
 }
-func JwtAuthMiddleware(secret string) gin.HandlerFunc {
+func JwtAuth(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
 		t := strings.Split(authHeader, " ")
