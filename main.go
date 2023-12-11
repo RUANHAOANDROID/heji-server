@@ -2,9 +2,11 @@ package main
 
 import (
 	"heji-server/cmd"
+	"heji-server/config"
 	"os"
 )
 
 func main() {
-	cmd.Main(os.Args)
+	conf := config.Load("config.yml")
+	cmd.Main(os.Args, conf)
 }

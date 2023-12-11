@@ -3,6 +3,8 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"heji-server/config"
+	"heji-server/internal/api/middleware"
+	"heji-server/mongo"
 	"heji-server/pkg"
 )
 
@@ -10,7 +12,7 @@ var log = pkg.Log
 
 var APIv1 *gin.RouterGroup
 
-func Setup(conf *config.Config) {
+func Setup(conf *config.Config, db mongo.Database) {
 	router := gin.Default()
 	trustedProxies := []string{
 		"127.0.0.1",
@@ -21,13 +23,10 @@ func Setup(conf *config.Config) {
 	}
 	//开启重定向
 	router.RedirectTrailingSlash = true
+	router.Use(middleware.Cors())
+	router.Use(middleware.ErrorHandler())
 	APIv1 = router.Group(config.ApiUri)
-	registerRoutes(conf)
+	registerRoutes(conf, db)
 
 	router.Run(":8888")
-}
-
-// registerRoutes configures the available web server routes.
-func registerRoutes(conf *config.Config) {
-	WebSocket(APIv1, conf)
 }

@@ -1,4 +1,4 @@
-package api
+package domain
 
 const (
 	SuccessCode = 0

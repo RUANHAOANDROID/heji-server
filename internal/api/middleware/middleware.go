@@ -1,9 +1,11 @@
-package server
+package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"heji-server/internal/api"
+	"heji-server/domain"
+	"heji-server/internal/tokenutil"
 	"net/http"
+	"strings"
 )
 
 func Cors() gin.HandlerFunc {
@@ -31,10 +33,35 @@ func ErrorHandler() gin.HandlerFunc {
 			// 获取最后一个错误
 			err := c.Errors.Last()
 			// 将错误信息转换为标准的响应格式
-			c.JSON(http.StatusOK, api.RespError(err.Error()))
-
+			c.JSON(http.StatusOK, domain.RespError(err.Error()))
 			// 阻止其他中间件和处理函数继续执行
 			c.Abort()
 		}
+	}
+}
+func JwtAuthMiddleware(secret string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.Request.Header.Get("Authorization")
+		t := strings.Split(authHeader, " ")
+		if len(t) == 2 {
+			authToken := t[1]
+			authorized, err := tokenutil.IsAuthorized(authToken, secret)
+			if authorized {
+				userID, err := tokenutil.ExtractIDFromToken(authToken, secret)
+				if err != nil {
+					c.JSON(http.StatusUnauthorized, domain.RespError(err.Error()))
+					c.Abort()
+					return
+				}
+				c.Set("x-user-id", userID)
+				c.Next()
+				return
+			}
+			c.JSON(http.StatusUnauthorized, domain.RespError(err.Error()))
+			c.Abort()
+			return
+		}
+		c.JSON(http.StatusUnauthorized, domain.RespError("Not authorized"))
+		c.Abort()
 	}
 }

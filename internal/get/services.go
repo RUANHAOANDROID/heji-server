@@ -18,3 +18,15 @@ func Config() *config.Config {
 	}
 	return conf
 }
+
+//func MongoTimeOutMax() time.Duration {
+//	return Config().Mongo.TimeoutMax
+//}
+
+func Jwt() config.Jwt {
+	return Config().Jwt
+}
+
+func Options() config.Options {
+	return Config().Options
+}
