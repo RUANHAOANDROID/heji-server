@@ -3,6 +3,7 @@ package cmd
 import (
 	"heji-server/config"
 	"heji-server/internal/api"
+	"heji-server/internal/get"
 	"heji-server/pkg"
 	"time"
 
@@ -19,21 +20,24 @@ const appCopyright = "(c) 2023-2024 hao88.cloud. All rights reserved."
 
 var version = "development"
 
-func Main(args []string) {
+func Main(args []string, conf *config.Config) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Error(r)
 			os.Exit(1)
 		}
 	}()
-	conf := config.Load()
+	get.SetConfig(conf)
+	mongo := NewMongoDatabase(conf)
+	database := mongo.Database(conf.Mongo.Database)
 	start := time.Now()
 	log.Info(args)
+	log.Info(conf)
 	log.Info(start)
 	log.Info(appName)
 	log.Info(appAbout)
 	log.Info(appEdition)
 	log.Info(appDescription)
 	log.Info(appCopyright)
-	api.Setup(conf)
+	api.Setup(conf, database)
 }
