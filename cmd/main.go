@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"heji-server/config"
-	"heji-server/internal/server"
+	"heji-server/internal/api"
 	"heji-server/pkg"
 	"time"
 
@@ -35,5 +35,5 @@ func Main(args []string) {
 	log.Info(appEdition)
 	log.Info(appDescription)
 	log.Info(appCopyright)
-	server.Start(conf)
+	api.Setup(conf)
 }
