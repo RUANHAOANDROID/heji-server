@@ -6,7 +6,6 @@ import (
 	"github.com/gorilla/websocket"
 	"heji-server/config"
 	handler2 "heji-server/internal/api/ws/handler"
-	"log"
 	"net/http"
 	"sync"
 )

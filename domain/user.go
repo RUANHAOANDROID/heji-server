@@ -1,16 +1,28 @@
 package domain
 
 import (
-	"github.com/golang-jwt/jwt/v4"
+	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type JwtCustomClaims struct {
-	Name string `json:"name"`
-	ID   string `json:"id"`
-	jwt.RegisteredClaims
+const (
+	CollectionUser = "users"
+)
+
+type User struct {
+	ID       primitive.ObjectID `bson:"_id"`
+	Name     string             `bson:"name"`
+	Tel      string             `bson:"tel"`
+	Email    string             `bson:"email"`
+	Password string             `bson:"password"`
 }
 
-type JwtCustomRefreshClaims struct {
-	ID string `json:"id"`
-	jwt.RegisteredClaims
+type UserRepository interface {
+	Create(c context.Context, user *User) error
+	Fetch(c context.Context) ([]User, error)
+	GetByEmail(c context.Context, email string) (User, error)
+	GetByID(c context.Context, id string) (User, error)
+}
+type UserUseCase interface {
+	Create(c context.Context, user *User) error
 }
