@@ -16,7 +16,6 @@ func NewMongoDatabase(conf *config.Config) mongo.Client {
 	dbPort := conf.Mongo.Port
 	dbUser := conf.Mongo.Username
 	dbPass := conf.Mongo.Password
-	//mongodb://db_user:HaoHejiServer0214!@hao88.cloud:8082/?authMechanism=SCRAM-SHA-256&authSource=heji
 	mongodbURI := fmt.Sprintf("mongodb://%s:%s@%s:%s", dbUser, dbPass, dbHost, dbPort)
 
 	if dbUser == "" || dbPass == "" {
