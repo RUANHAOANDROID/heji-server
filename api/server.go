@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"heji-server/api/middleware"
 	"heji-server/config"
-	"heji-server/internal/api/middleware"
 	"heji-server/mongo"
 	"heji-server/pkg"
 )

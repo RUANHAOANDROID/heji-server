@@ -11,6 +11,15 @@ type userRepository struct {
 	collection string
 }
 
+func (u *userRepository) Register(c context.Context, user *domain.User) error {
+	coll := u.database.Collection(u.collection)
+	_, err := coll.InsertOne(c, user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u userRepository) Create(c context.Context, user *domain.User) error {
 	//TODO implement me
 	panic("implement me")
