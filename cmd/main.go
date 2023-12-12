@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"heji-server/api"
 	"heji-server/config"
-	"heji-server/internal/api"
 	"heji-server/internal/get"
 	"heji-server/pkg"
 	"time"

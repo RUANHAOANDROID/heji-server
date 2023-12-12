@@ -11,9 +11,9 @@ type userUserCase struct {
 	contextTimeout time.Duration
 }
 
-func (l userUserCase) Register(c context.Context, user *domain.User) {
-	//TODO implement me
-	panic("implement me")
+func (uc *userUserCase) Register(c context.Context, user *domain.User) error {
+	err := uc.userRepository.Register(c, user)
+	return err
 }
 
 func NewLoginUseCase(userRepository domain.UserRepository, timeout time.Duration) domain.UserUseCase {

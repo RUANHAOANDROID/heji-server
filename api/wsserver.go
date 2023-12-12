@@ -4,8 +4,8 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	handler2 "heji-server/api/ws/handler"
 	"heji-server/config"
-	handler2 "heji-server/internal/api/ws/handler"
 	"net/http"
 	"sync"
 )
