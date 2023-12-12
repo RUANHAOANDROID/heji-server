@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-type LoginController struct {
+type UserController struct {
 	LoginUseCase domain.LoginUseCase
 }
 
-func (lc *LoginController) Login(c *gin.Context) {
+func (uc *UserController) Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, "login response ")
 }

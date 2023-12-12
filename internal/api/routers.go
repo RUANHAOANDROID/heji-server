@@ -19,7 +19,7 @@ func registerRoutes(conf *config.Config, db mongo.Database) {
 }
 func NewLoginRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db, domain.CollUser)
-	lc := &controller.LoginController{
+	lc := &controller.UserController{
 		LoginUseCase: usecase.NewLoginUseCase(ur, timeout),
 	}
 	group.POST("/login", lc.Login)

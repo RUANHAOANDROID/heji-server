@@ -18,6 +18,6 @@ mongo:
 
 jwt:
   secret: AV8DHao88.cloud1F@!9fe3=!W$W-FaF`L1L2I3I4E5W
-  remember_me: 5
+  expirationTime: 720h
 
 
