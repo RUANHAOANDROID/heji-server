@@ -26,8 +26,8 @@ type Mongo struct {
 	TimeoutMax time.Duration `yaml:"timeoutMax"`
 }
 type Jwt struct {
-	Secret     string
-	RememberMe int64
+	Secret         string        `yaml:"secret"`
+	ExpirationTime time.Duration `yaml:"expirationTime"`
 }
 type Options struct {
 }
