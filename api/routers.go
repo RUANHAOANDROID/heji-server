@@ -22,5 +22,6 @@ func NewUserRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGr
 	lc := &controller.UserController{
 		UserUseCase: usecase.NewLoginUseCase(ur, timeout),
 	}
-	group.POST("/login", lc.Login)
+	group.POST("/Register", lc.Register)
+	group.POST("/Login", lc.Login)
 }
