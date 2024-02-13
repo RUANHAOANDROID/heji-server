@@ -43,10 +43,11 @@ func ErrorHandler() gin.HandlerFunc {
 func JwtAuth(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
-		if strings.Contains(path, "Register") {
+		if strings.Contains(path, "Register") || strings.Contains(path, "Login") {
 			c.Next()
 			return
 		}
+
 		authHeader := c.Request.Header.Get("Authorization")
 		t := strings.Split(authHeader, " ")
 		if len(t) == 2 {

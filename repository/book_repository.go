@@ -6,6 +6,7 @@ import (
 	"heji-server/domain"
 )
 
+// 账本存储库
 type bookRepository struct {
 	database   mongo.Database
 	collection string
