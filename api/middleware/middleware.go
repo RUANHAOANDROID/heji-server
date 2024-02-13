@@ -1,5 +1,6 @@
 package middleware
 
+import "C"
 import (
 	"github.com/gin-gonic/gin"
 	"heji-server/domain"
@@ -41,6 +42,11 @@ func ErrorHandler() gin.HandlerFunc {
 }
 func JwtAuth(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		path := c.Request.URL.Path
+		if strings.Contains(path, "Register") {
+			c.Next()
+			return
+		}
 		authHeader := c.Request.Header.Get("Authorization")
 		t := strings.Split(authHeader, " ")
 		if len(t) == 2 {
