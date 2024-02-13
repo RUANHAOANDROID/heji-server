@@ -8,6 +8,7 @@ import (
 	"heji-server/mongo"
 )
 
+// userRepository 结构体实现了 domain.UserRepository
 type userRepository struct {
 	database   mongo.Database
 	collection string

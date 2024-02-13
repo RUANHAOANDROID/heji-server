@@ -11,7 +11,13 @@ type UserController struct {
 }
 
 func (uc *UserController) Login(c *gin.Context) {
-
+	var request domain.LoginRequest
+	err := c.ShouldBind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.RespError("Login request format error!"))
+		return
+	}
+	uc.UserUseCase.CreateAccessToken()
 	c.JSON(http.StatusOK, "login response ")
 }
 func (uc *UserController) Register(c *gin.Context) {

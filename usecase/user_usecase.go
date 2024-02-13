@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"heji-server/domain"
+	"heji-server/internal/tokenutil"
 	"time"
 )
 
@@ -23,17 +24,15 @@ func NewLoginUseCase(userRepository domain.UserRepository, timeout time.Duration
 	}
 }
 
-func (l userUserCase) GetByTel(c context.Context, email string) (domain.User, error) {
-	//TODO implement me
-	panic("implement me")
+func (uc *userUserCase) GetByTel(c context.Context, tel string) (domain.User, error) {
+	user, err := uc.userRepository.GetByTel(c, tel)
+	return user, err
 }
 
-func (l userUserCase) CreateAccessToken(user *domain.User, secret string, expiry int) (accessToken string, err error) {
-	//TODO implement me
-	panic("implement me")
+func (uc *userUserCase) CreateAccessToken(user *domain.User, secret string, expiry time.Duration) (accessToken string, err error) {
+	return tokenutil.CreateAccessToken(user, secret, expiry)
 }
 
-func (l userUserCase) CreateRefreshToken(user *domain.User, secret string, expiry int) (refreshToken string, err error) {
-	//TODO implement me
-	panic("implement me")
+func (uc *userUserCase) CreateRefreshToken(user *domain.User, secret string, expiry time.Duration) (refreshToken string, err error) {
+	return tokenutil.CreateRefreshToken(user, secret, expiry)
 }
