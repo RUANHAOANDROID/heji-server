@@ -30,14 +30,12 @@ type User struct {
 	ID       primitive.ObjectID `bson:"_id"`
 	Name     string             `bson:"name"`
 	Tel      string             `bson:"tel"`
-	Email    string             `bson:"email"`
 	Password string             `bson:"password"`
 	ImageUrl string             `bson:"image_url"`
 }
 
+// UserRepository 定义用户资料接口
 type UserRepository interface {
 	Register(c context.Context, user *User) error
-	Create(c context.Context, user *User) error
-	Fetch(c context.Context) ([]User, error)
-	GetByID(c context.Context, id string) (User, error)
+	GetByTel(c context.Context, tel string) (User, error)
 }

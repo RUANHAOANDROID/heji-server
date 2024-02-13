@@ -9,11 +9,11 @@ options:
   db: mongo
 
 mongo:
-  host: hao88.cloud
-  port: 8082
+  host: 192.168.8.6
+  port: 27017
   database: heji
-  username: db_user
-  password: HaoHejiServer0214!
+  username: root
+  password: Hao88.mongo!
   timeoutMax: 10s
 redis:
   address: "192.168.8.6:6379"

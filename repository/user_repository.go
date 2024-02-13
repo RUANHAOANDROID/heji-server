@@ -2,6 +2,8 @@ package repository
 
 import (
 	"context"
+	"errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"heji-server/domain"
 	"heji-server/mongo"
 )
@@ -11,35 +13,29 @@ type userRepository struct {
 	collection string
 }
 
+// Register 注册一个
 func (u *userRepository) Register(c context.Context, user *domain.User) error {
+	result, err := u.GetByTel(c, user.Tel)
+	if err == nil && result.Tel == user.Tel {
+		return errors.New("用户已存在")
+	}
 	coll := u.database.Collection(u.collection)
-	_, err := coll.InsertOne(c, user)
+	_, err = coll.InsertOne(c, user)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u userRepository) Create(c context.Context, user *domain.User) error {
-	//TODO implement me
-	panic("implement me")
+func (u *userRepository) GetByTel(c context.Context, tel string) (domain.User, error) {
+	coll := u.database.Collection(u.collection)
+	filter := bson.M{"tel": tel}
+	var result domain.User
+	err := coll.FindOne(c, filter).Decode(&result)
+	return result, err
 }
 
-func (u userRepository) Fetch(c context.Context) ([]domain.User, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u userRepository) GetByEmail(c context.Context, email string) (domain.User, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u userRepository) GetByID(c context.Context, id string) (domain.User, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
+// NewUserRepository 初始化用户仓库
 func NewUserRepository(db mongo.Database, collection string) domain.UserRepository {
 	return &userRepository{
 		database:   db,
