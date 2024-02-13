@@ -7,6 +7,9 @@ import (
 )
 
 func main() {
-	conf := config.Load("config.yml")
+	conf, err := config.Load("config.yml")
+	if err != nil {
+		panic(err)
+	}
 	cmd.Main(os.Args, conf)
 }
