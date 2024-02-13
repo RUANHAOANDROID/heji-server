@@ -8,6 +8,7 @@ import (
 // Config app config
 type Config struct {
 	App     App
+	Redis   Redis
 	Mongo   Mongo
 	Jwt     Jwt
 	Options Options
@@ -29,15 +30,21 @@ type Jwt struct {
 	Secret         string        `yaml:"secret"`
 	ExpirationTime time.Duration `yaml:"expirationTime"`
 }
+type Redis struct {
+	Address  string `yaml:"address"`
+	Password string `yaml:"password"`
+	DB       int    `yaml:"db"`
+}
+
 type Options struct {
 }
 
-func Load(path string) *Config {
+func Load(path string) (*Config, error) {
 	// Initialize options from config file and CLI context.
 	var config Config
-	pkg.LoadYml(path, &config)
-	return &config
-}
-func Get() {
-
+	err := pkg.LoadYml(path, &config)
+	if err != nil {
+		pkg.Log.Error(err)
+	}
+	return &config, nil
 }
