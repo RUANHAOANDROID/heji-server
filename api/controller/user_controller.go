@@ -18,7 +18,10 @@ func (uc *UserController) Login(c *gin.Context) {
 		return
 	}
 	token, err := uc.UserUseCase.Login(c, &request)
-
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.RespError(err.Error()))
+		return
+	}
 	c.JSON(http.StatusOK, domain.RespSuccess(token))
 }
 func (uc *UserController) Register(c *gin.Context) {
