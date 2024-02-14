@@ -22,6 +22,7 @@ type LoginResponse struct {
 type UserUseCase interface {
 	Register(c context.Context, user *User) error
 	GetByTel(c context.Context, tel string) (User, error)
+	Login(c context.Context, request *LoginRequest) (string, error)
 	CreateAccessToken(user *User, secret string, expiry time.Duration) (accessToken string, err error)
 	CreateRefreshToken(user *User, secret string, expiry time.Duration) (refreshToken string, err error)
 }
