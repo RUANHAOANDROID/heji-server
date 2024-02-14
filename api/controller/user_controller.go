@@ -17,8 +17,9 @@ func (uc *UserController) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.RespError("Login request format error!"))
 		return
 	}
-	uc.UserUseCase.CreateAccessToken()
-	c.JSON(http.StatusOK, "login response ")
+	token, err := uc.UserUseCase.Login(c, &request)
+
+	c.JSON(http.StatusOK, domain.RespSuccess(token))
 }
 func (uc *UserController) Register(c *gin.Context) {
 	var user domain.User
