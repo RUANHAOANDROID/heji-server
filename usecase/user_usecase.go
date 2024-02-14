@@ -18,7 +18,7 @@ type userUserCase struct {
 func (uc *userUserCase) Login(c context.Context, request *domain.LoginRequest) (string, error) {
 	user, err := uc.userRepository.GetByTel(c, request.Tel)
 	if err != nil {
-		return "user not exits!", err
+		return "", errors.New("用户不存在")
 	}
 	if user.Password != request.Password {
 		return "", errors.New("密码不正确")
