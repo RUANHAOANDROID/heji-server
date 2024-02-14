@@ -33,11 +33,11 @@ const (
 
 // User Mongo 用户结构体
 type User struct {
-	ID       primitive.ObjectID `bson:"_id"`
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	Name     string             `bson:"name" json:"name"`
 	Tel      string             `bson:"tel" json:"tel"`
 	Password string             `bson:"password" json:"password"`
-	ImageUrl string             `bson:"image_url"`
+	ImageUrl string             `bson:"image_url" json:"image_url"`
 }
 
 // UserRepository 定义用户资料接口
