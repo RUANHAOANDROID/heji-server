@@ -14,8 +14,8 @@ import (
 
 // registerRoutes configures the available web server routes.
 func registerRoutes(conf *config.Config, db mongo.Database) {
-	WebSocket(APIv1, conf)
 	timeout := get.Config().Mongo.TimeoutMax
+	WebSocket(APIv1, conf)
 	NewUserRouter(db, timeout, APIv1)
 	NewBookRouter(db, timeout, APIv1)
 }
@@ -32,5 +32,5 @@ func NewBookRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGr
 	bc := &controller.BookController{
 		UseCase: usecase.NewBookUseCase(br, timeout),
 	}
-	group.POST("/", bc.Create)
+	group.POST("/CreateBook", bc.CreateBook)
 }

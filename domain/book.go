@@ -10,11 +10,13 @@ const (
 )
 
 type Book struct {
-	ID     primitive.ObjectID `bson:"_id"`
-	Name   string             `bson:"name"`
-	Type   int64              `bson:"type"`
-	Banner string             `bson:"banner"`
-	Users  []User             `bson:"users"`
+	ID        primitive.ObjectID `bson:"_id" json:"_id"`
+	Name      string             `bson:"name" json:"name"`
+	Type      int64              `bson:"type" json:"type"`
+	Banner    string             `bson:"banner" json:"banner"`
+	UserId    string             `bson:"user_id" json:"userId"`
+	Users     []string           `bson:"users" json:"users"`
+	IsInitial bool               `bson:"is_initial" json:"isInitial"`
 }
 type BookUseCase interface {
 	CreateBook(c context.Context, book *Book) error
