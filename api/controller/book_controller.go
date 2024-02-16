@@ -22,7 +22,7 @@ func (bc *BookController) CreateBook(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.RespError(err.Error()))
 		return
 	}
-	c.JSON(http.StatusOK, domain.RespSuccess("nil"))
+	c.JSON(http.StatusOK, domain.RespSuccess(nil))
 }
 func (bc *BookController) BookList(c *gin.Context) {
 

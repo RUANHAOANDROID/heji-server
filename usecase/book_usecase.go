@@ -11,8 +11,8 @@ type bookUseCase struct {
 }
 
 func (b bookUseCase) CreateBook(c context.Context, book *domain.Book) error {
-	//TODO implement me
-	panic("implement me")
+	err := b.repository.CreateOne(c, book)
+	return err
 }
 
 func (b bookUseCase) BookList(c context.Context, book *[]domain.Book) error {

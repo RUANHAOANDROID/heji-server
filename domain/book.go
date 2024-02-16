@@ -14,7 +14,7 @@ type Book struct {
 	Name      string             `bson:"name" json:"name"`
 	Type      int64              `bson:"type" json:"type"`
 	Banner    string             `bson:"banner" json:"banner"`
-	UserId    string             `bson:"user_id" json:"userId"`
+	UserId    string             `bson:"user_id" json:"user_id"`
 	Users     []string           `bson:"users" json:"users"`
 	IsInitial bool               `bson:"is_initial" json:"isInitial"`
 }
@@ -28,7 +28,8 @@ type BookUseCase interface {
 }
 
 type BookRepository interface {
-	Create(c context.Context, book *Book) error
+	CreateOne(c context.Context, book *Book) error
+	FindOne(c context.Context, id primitive.ObjectID) (Book, error)
 	List(c context.Context, userId string) (*[]Book, error)
 	Update(c context.Context, book *Book) (*Book, error)
 }
