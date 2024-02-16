@@ -49,7 +49,6 @@ func (b bookRepository) Update(c context.Context, book *domain.Book) (*domain.Bo
 }
 
 func (b bookRepository) CreateOne(c context.Context, book *domain.Book) error {
-	coll := b.database.Collection(domain.CollBook)
 	if book.IsInitial {
 		initBook, err := b.FindInitialBook(c, book.CrtUserId)
 		if err == nil && initBook.IsInitial == book.IsInitial {
@@ -60,6 +59,7 @@ func (b bookRepository) CreateOne(c context.Context, book *domain.Book) error {
 	if err == nil && (book.ID == one.ID) {
 		return errors.New("账本已存在！")
 	}
+	coll := b.database.Collection(domain.CollBook)
 	_, err = coll.InsertOne(c, book)
 	if err != nil {
 		return err
