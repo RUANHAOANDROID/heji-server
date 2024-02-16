@@ -14,9 +14,9 @@ type Book struct {
 	Name      string             `bson:"name" json:"name"`
 	Type      int64              `bson:"type" json:"type"`
 	Banner    string             `bson:"banner" json:"banner"`
-	UserId    string             `bson:"user_id" json:"user_id"`
+	CrtUserId string             `bson:"crt_user_id" json:"crt_user_id"`
 	Users     []string           `bson:"users" json:"users"`
-	IsInitial bool               `bson:"is_initial" json:"isInitial"`
+	IsInitial bool               `bson:"is_initial" json:"is_initial"`
 }
 type BookUseCase interface {
 	CreateBook(c context.Context, book *Book) error
