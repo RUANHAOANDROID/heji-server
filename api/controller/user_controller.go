@@ -6,10 +6,12 @@ import (
 	"net/http"
 )
 
+// UserController 用户API入口
 type UserController struct {
-	UserUseCase domain.UserUseCase
+	UserUseCase domain.UserUseCase //用户用例
 }
 
+// Login 登录接口
 func (uc *UserController) Login(c *gin.Context) {
 	var request domain.LoginRequest
 	err := c.ShouldBind(&request)
@@ -17,7 +19,7 @@ func (uc *UserController) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.RespError("Login request format error!"))
 		return
 	}
-	token, err := uc.UserUseCase.Login(c, &request)
+	token, err := uc.UserUseCase.Login(c, &request) //用户用例的实现
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.RespError(err.Error()))
 		return

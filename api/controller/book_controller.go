@@ -7,10 +7,9 @@ import (
 )
 
 type BookController struct {
-	BookUseCase domain.BookUseCase
+	UseCase domain.BookUseCase
 }
 
 func (bc *BookController) Create(c *gin.Context) {
-	//var request domain.Book
 	c.JSON(http.StatusOK, "response")
 }

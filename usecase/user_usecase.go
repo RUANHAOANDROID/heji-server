@@ -15,8 +15,9 @@ type userUserCase struct {
 	contextTimeout time.Duration
 }
 
+// Login 用户用例实现Login
 func (uc *userUserCase) Login(c context.Context, request *domain.LoginRequest) (string, error) {
-	user, err := uc.userRepository.GetByTel(c, request.Tel)
+	user, err := uc.userRepository.GetByTel(c, request.Tel) //用例持有Users用户存储库
 	if err != nil {
 		return "", errors.New("用户不存在")
 	}
