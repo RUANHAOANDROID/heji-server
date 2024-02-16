@@ -20,7 +20,7 @@ type Book struct {
 }
 type BookUseCase interface {
 	CreateBook(c context.Context, book *Book) error
-	BookList(c context.Context, book *[]Book) error
+	BookList(c context.Context, userId string) (*[]Book, error)
 	DeleteBook(c context.Context, bookId string) error
 	JoinBook(c context.Context, code string) error
 	UpdateBook(c context.Context, book *Book) error

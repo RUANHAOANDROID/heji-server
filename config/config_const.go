@@ -11,6 +11,8 @@ const StaticUri = "/static"
 // CustomStaticUri is the relative path for serving custom static content.
 const CustomStaticUri = "/c/static"
 
+const AuthUserId = "x-user-id"
+
 // DefaultAutoIndexDelay and DefaultAutoImportDelay set the default safety delay duration
 // before starting to index/import in the background.
 const DefaultAutoIndexDelay = int(5 * 60)  // 5 Minutes

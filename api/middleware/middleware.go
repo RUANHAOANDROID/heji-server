@@ -3,6 +3,7 @@ package middleware
 import "C"
 import (
 	"github.com/gin-gonic/gin"
+	"heji-server/config"
 	"heji-server/domain"
 	"heji-server/internal/tokenutil"
 	"net/http"
@@ -60,7 +61,7 @@ func JwtAuth(secret string) gin.HandlerFunc {
 					c.Abort()
 					return
 				}
-				c.Set("x-user-id", userID)
+				c.Set(config.AuthUserId, userID)
 				c.Next()
 				return
 			}

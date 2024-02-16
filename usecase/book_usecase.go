@@ -10,14 +10,13 @@ type bookUseCase struct {
 	repository domain.BookRepository
 }
 
+func (b bookUseCase) BookList(c context.Context, userId string) (*[]domain.Book, error) {
+	return b.repository.List(c, userId)
+}
+
 func (b bookUseCase) CreateBook(c context.Context, book *domain.Book) error {
 	err := b.repository.CreateOne(c, book)
 	return err
-}
-
-func (b bookUseCase) BookList(c context.Context, book *[]domain.Book) error {
-	//TODO implement me
-	panic("implement me")
 }
 
 func (b bookUseCase) DeleteBook(c context.Context, bookId string) error {

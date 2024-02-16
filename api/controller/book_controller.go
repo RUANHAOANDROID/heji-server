@@ -25,8 +25,14 @@ func (bc *BookController) CreateBook(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.RespSuccess(nil))
 }
 func (bc *BookController) BookList(c *gin.Context) {
-
+	books, err := bc.UseCase.BookList(c, getUserId(c))
+	if err != nil {
+		c.JSON(http.StatusOK, domain.RespError(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, domain.RespSuccess(books))
 }
+
 func (bc *BookController) DeleteBook(c *gin.Context) {
 
 }

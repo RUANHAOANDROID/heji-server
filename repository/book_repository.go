@@ -24,8 +24,15 @@ func (b bookRepository) FindOne(c context.Context, id primitive.ObjectID) (domai
 }
 
 func (b bookRepository) List(c context.Context, userId string) (*[]domain.Book, error) {
-	//TODO implement me
-	panic("implement me")
+	coll := b.database.Collection(domain.CollBook)
+	filter := bson.M{"user_id": userId}
+	cursor, err := coll.Find(c, filter)
+	if err != nil {
+		return nil, err
+	}
+	var books []domain.Book
+	err = cursor.All(c, &books)
+	return &books, err
 }
 
 func (b bookRepository) Update(c context.Context, book *domain.Book) (*domain.Book, error) {

@@ -33,4 +33,5 @@ func NewBookRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGr
 		UseCase: usecase.NewBookUseCase(br, timeout),
 	}
 	group.POST("/CreateBook", bc.CreateBook)
+	group.POST("/BookList", bc.BookList)
 }
