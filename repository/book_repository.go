@@ -15,6 +15,14 @@ type bookRepository struct {
 	collection string
 }
 
+func (b bookRepository) FindInitialBook(c context.Context, tel string) (domain.Book, error) {
+	coll := b.database.Collection(b.collection)
+	filter := bson.M{"crt_user_id": tel, "is_initial": true}
+	var book domain.Book
+	err := coll.FindOne(c, filter).Decode(&book)
+	return book, err
+}
+
 func (b bookRepository) FindOne(c context.Context, id primitive.ObjectID) (domain.Book, error) {
 	coll := b.database.Collection(b.collection)
 	filter := bson.M{"_id": id}
@@ -25,7 +33,7 @@ func (b bookRepository) FindOne(c context.Context, id primitive.ObjectID) (domai
 
 func (b bookRepository) List(c context.Context, userId string) (*[]domain.Book, error) {
 	coll := b.database.Collection(domain.CollBook)
-	filter := bson.M{"user_id": userId}
+	filter := bson.M{"crt_user_id": userId}
 	cursor, err := coll.Find(c, filter)
 	if err != nil {
 		return nil, err
@@ -42,6 +50,12 @@ func (b bookRepository) Update(c context.Context, book *domain.Book) (*domain.Bo
 
 func (b bookRepository) CreateOne(c context.Context, book *domain.Book) error {
 	coll := b.database.Collection(domain.CollBook)
+	if book.IsInitial {
+		initBook, err := b.FindInitialBook(c, book.CrtUserId)
+		if err == nil && initBook.IsInitial == book.IsInitial {
+			return errors.New("已存在初始账本")
+		}
+	}
 	one, err := b.FindOne(c, book.ID)
 	if err == nil && (book.ID == one.ID) {
 		return errors.New("账本已存在！")

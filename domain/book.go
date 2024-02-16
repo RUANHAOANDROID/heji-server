@@ -30,6 +30,7 @@ type BookUseCase interface {
 type BookRepository interface {
 	CreateOne(c context.Context, book *Book) error
 	FindOne(c context.Context, id primitive.ObjectID) (Book, error)
+	FindInitialBook(c context.Context, tel string) (Book, error)
 	List(c context.Context, userId string) (*[]Book, error)
 	Update(c context.Context, book *Book) (*Book, error)
 }
