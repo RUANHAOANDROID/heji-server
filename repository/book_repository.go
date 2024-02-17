@@ -9,6 +9,8 @@ import (
 	"heji-server/mongo"
 )
 
+var book domain.Book
+
 // 账本存储库
 type bookRepository struct {
 	database   mongo.Database
@@ -17,7 +19,7 @@ type bookRepository struct {
 
 func (b bookRepository) FindInitialBook(c context.Context, tel string) (domain.Book, error) {
 	coll := b.database.Collection(b.collection)
-	filter := bson.M{"crt_user_id": tel, "is_initial": true}
+	filter := bson.M{book.TagsBson().IsInitial: tel, "is_initial": true}
 	var book domain.Book
 	err := coll.FindOne(c, filter).Decode(&book)
 	return book, err
@@ -33,7 +35,8 @@ func (b bookRepository) FindOne(c context.Context, id primitive.ObjectID) (domai
 
 func (b bookRepository) List(c context.Context, userId string) (*[]domain.Book, error) {
 	coll := b.database.Collection(domain.CollBook)
-	filter := bson.M{"crt_user_id": userId}
+	tags := book.TagsBson()
+	filter := bson.M{tags.CrtUserId: userId}
 	cursor, err := coll.Find(c, filter)
 	if err != nil {
 		return nil, err

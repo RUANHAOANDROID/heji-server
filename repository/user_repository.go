@@ -8,6 +8,8 @@ import (
 	"heji-server/mongo"
 )
 
+var user domain.User
+
 // userRepository 结构体实现了 domain.UserRepository
 type userRepository struct {
 	database   mongo.Database
@@ -30,7 +32,8 @@ func (u *userRepository) Register(c context.Context, user *domain.User) error {
 
 func (u *userRepository) GetByTel(c context.Context, tel string) (domain.User, error) {
 	coll := u.database.Collection(u.collection)
-	filter := bson.M{"tel": tel}
+	tags := user.TagsBson()
+	filter := bson.M{tags.Tel: tel}
 	var result domain.User
 	err := coll.FindOne(c, filter).Decode(&result)
 	return result, err

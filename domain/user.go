@@ -32,6 +32,8 @@ const (
 )
 
 // User Mongo 用户结构体
+//
+//go:generate go run github.com/wolfogre/gtag/cmd/gtag -types User -tags bson .
 type User struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	Name     string             `bson:"name" json:"name"`
