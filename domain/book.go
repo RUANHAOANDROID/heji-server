@@ -22,14 +22,17 @@ type Book struct {
 	Type      int64              `bson:"type" json:"type"`
 	Banner    string             `bson:"banner" json:"banner"`
 	CrtUserId string             `bson:"crt_user_id" json:"crt_user_id"`
+	CrtTime   string             `bson:"crt_time" json:"crt_time"`
+	UpdTime   string             `bson:"upd_time" json:"upd_time"`
 	Users     []string           `bson:"users" json:"users"`
 	IsInitial bool               `bson:"is_initial" json:"is_initial"`
 }
+
 type BookUseCase interface {
 	CreateBook(c context.Context, book *Book) error
 	BookList(c context.Context, userId string) (*[]Book, error)
 	DeleteBook(c context.Context, bookId string) error
-	JoinBook(c context.Context, code string) error
+	JoinBook(c context.Context, code string, userId string) error
 	UpdateBook(c context.Context, book *Book) error
 	SharedBook(c context.Context, bookId string) (string, error)
 }
@@ -40,4 +43,6 @@ type BookRepository interface {
 	FindInitialBook(c context.Context, tel string) (Book, error)
 	List(c context.Context, userId string) (*[]Book, error)
 	Update(c context.Context, book *Book) (*Book, error)
+	Delete(c context.Context, id primitive.ObjectID) error
+	AddBookUser(c context.Context, bookId string, userId string) error
 }

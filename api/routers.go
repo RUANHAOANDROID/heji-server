@@ -29,9 +29,13 @@ func NewUserRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGr
 }
 func NewBookRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
 	br := repository.NewBookRepository(db, domain.CollBook)
+	sr := repository.NewSharedRepository(db, domain.CollShared)
 	bc := &controller.BookController{
-		UseCase: usecase.NewBookUseCase(br, timeout),
+		UseCase: usecase.NewBookUseCase(br, sr, timeout),
 	}
 	group.POST("/CreateBook", bc.CreateBook)
 	group.POST("/BookList", bc.BookList)
+	group.POST("/DeleteBook", bc.DeleteBook)
+	group.POST("/UpdateBook", bc.UpdateBook)
+	group.POST("/SharedBook", bc.SharedBook)
 }
