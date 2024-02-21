@@ -6,7 +6,7 @@ import (
 )
 
 type Bill struct {
-	ID     primitive.ObjectID `bson:"_id"`
+	ID     primitive.ObjectID `bson:"_id,omitempty"`
 	Name   string             `bson:"name"`
 	Type   int64              `bson:"type"`
 	Banner string             `bson:"banner"`

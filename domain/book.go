@@ -17,7 +17,7 @@ const (
 
 //go:generate go run github.com/wolfogre/gtag/cmd/gtag -types Book -tags bson .
 type Book struct {
-	ID        primitive.ObjectID `bson:"_id" json:"_id"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	Name      string             `bson:"name" json:"name"`
 	Type      int64              `bson:"type" json:"type"`
 	Banner    string             `bson:"banner" json:"banner"`

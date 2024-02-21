@@ -56,7 +56,7 @@ func (bc *BookController) UpdateBook(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.RespSuccess(nil))
 }
 func (bc *BookController) SharedBook(c *gin.Context) {
-	id := c.Query("book_id")
+	id := c.Param("book_id")
 	code, err := bc.UseCase.SharedBook(c, id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.RespError(err.Error()))
@@ -64,7 +64,7 @@ func (bc *BookController) SharedBook(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.RespSuccess(code))
 }
 func (bc *BookController) JoinBook(c *gin.Context) {
-	code := c.Query("code")
+	code := c.Param("code")
 	userId := getUserId(c)
 	err := bc.UseCase.JoinBook(c, code, userId)
 	if err != nil {

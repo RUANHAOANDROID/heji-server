@@ -45,8 +45,7 @@ func (b bookUseCase) UpdateBook(c context.Context, book *domain.Book) error {
 }
 
 func (b bookUseCase) SharedBook(c context.Context, bookId string) (string, error) {
-	//TODO implement me
-	panic("implement me")
+	return b.sharedRepository.CreateOne(c, bookId)
 }
 
 func (b bookUseCase) Create(c context.Context, book *domain.Book) error {

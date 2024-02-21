@@ -35,7 +35,8 @@ func NewBookRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGr
 	}
 	group.POST("/CreateBook", bc.CreateBook)
 	group.POST("/BookList", bc.BookList)
-	group.POST("/DeleteBook", bc.DeleteBook)
+	group.POST("/DeleteBook/:book_id", bc.DeleteBook)
 	group.POST("/UpdateBook", bc.UpdateBook)
-	group.POST("/SharedBook", bc.SharedBook)
+	group.POST("/SharedBook/:book_id", bc.SharedBook)
+	group.POST("/JoinBook/:code", bc.JoinBook)
 }

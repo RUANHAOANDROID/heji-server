@@ -33,7 +33,7 @@ func randomCode() string {
 
 var shared domain.Shared
 
-func (s sharedRepository) CreateOne(c context.Context, bookId string) error {
+func (s sharedRepository) CreateOne(c context.Context, bookId string) (string, error) {
 	coll := s.database.Collection(s.collection)
 	shared := domain.Shared{
 		Code:       randomCode(),
@@ -41,7 +41,7 @@ func (s sharedRepository) CreateOne(c context.Context, bookId string) error {
 		ExpireTime: primitive.NewDateTimeFromTime(time.Now().Add(5 * time.Minute)),
 	}
 	_, err := coll.InsertOne(c, shared)
-	return err
+	return shared.Code, err
 }
 
 func (s sharedRepository) FindBookId(c context.Context, code string) (string, error) {
