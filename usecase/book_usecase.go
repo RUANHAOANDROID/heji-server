@@ -45,6 +45,14 @@ func (b bookUseCase) UpdateBook(c context.Context, book *domain.Book) error {
 }
 
 func (b bookUseCase) SharedBook(c context.Context, bookId string) (string, error) {
+	hexID, err := primitive.ObjectIDFromHex(bookId)
+	if err != nil {
+		return "", errors.New("book_id Param Error")
+	}
+	_, err = b.repository.FindOne(c, hexID)
+	if err != nil {
+		return "", errors.New("账本不存在或未同步")
+	}
 	return b.sharedRepository.CreateOne(c, bookId)
 }
 

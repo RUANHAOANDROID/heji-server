@@ -10,6 +10,7 @@ type Config struct {
 	App     App
 	Redis   Redis
 	Mongo   Mongo
+	MinIO   MinIO
 	Jwt     Jwt
 	Options Options
 }
@@ -29,6 +30,12 @@ type Mongo struct {
 type Jwt struct {
 	Secret         string        `yaml:"secret"`
 	ExpirationTime time.Duration `yaml:"expirationTime"`
+}
+type MinIO struct {
+	Address   string `yaml:"address"`
+	AccessKey string `yaml:"accessKey"`
+	SecretKey string `yaml:"secretKey"`
+	Token     string `yaml:"token"`
 }
 type Redis struct {
 	Address  string `yaml:"address"`

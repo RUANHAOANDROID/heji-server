@@ -36,7 +36,7 @@ func (bc *BookController) BookList(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.RespSuccess(books))
 }
 func (bc *BookController) DeleteBook(c *gin.Context) {
-	id := c.Query("book_id")
+	id := c.Param("book_id")
 	err := bc.UseCase.DeleteBook(c, id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.RespError(err.Error()))

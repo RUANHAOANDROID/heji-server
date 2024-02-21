@@ -15,6 +15,11 @@ mongo:
   username: root
   password: Hao88.mongo!
   timeoutMax: 10s
+minio:
+  address: "192.168.8.6:9768"
+  accessKey: "ELUGN04RII6WD4K59DEM"
+  secretKey: "ObhJpLZ6dNvR1sw2ZOU8EgvFCC9yuzEZIqS+m+Ul"
+  token: ""
 redis:
   address: "192.168.8.6:6379"
   password:
