@@ -19,7 +19,7 @@ func randomCode() string {
 	rand.Seed(time.Now().UnixNano())
 
 	// 定义字符集
-	charSet := "abcdefghijklmnopqrstuvwxyz0123456789"
+	charSet := "abcdefghkmnpqrstuvwyz23456789"
 	charSetLength := len(charSet)
 
 	// 生成四位随机字符
