@@ -16,8 +16,6 @@ type sharedRepository struct {
 }
 
 func randomCode() string {
-	rand.Seed(time.Now().UnixNano())
-
 	// 定义字符集
 	charSet := "abcdefghkmnpqrstuvwyz23456789"
 	charSetLength := len(charSet)
