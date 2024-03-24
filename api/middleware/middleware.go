@@ -1,6 +1,5 @@
 package middleware
 
-import "C"
 import (
 	"github.com/gin-gonic/gin"
 	"heji-server/config"
