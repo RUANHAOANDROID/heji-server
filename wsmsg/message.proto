@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "../wsmsg";
+option java_package = "com.hao.heji.wsmsg";
+
+package com.heji.proto;
+
+//消息类型
+enum Type {
+    ACK = 0;
+    ADD_BILL = 1;
+    DELETE_BILL = 2;
+    UPDATE_BILL = 3;
+}
+//消息体
+message Packet {
+    string id = 1;
+    Type type = 2;
+    uint64 timestamp = 3;
+    string fromId = 4;
+    repeated string toId = 5;
+    string content = 6;
+}

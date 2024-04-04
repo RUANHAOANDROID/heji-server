@@ -2,10 +2,13 @@ package api
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	handler2 "heji-server/api/ws/handler"
+	"google.golang.org/protobuf/proto"
+	"heji-server/api/ws"
 	"heji-server/config"
+	"heji-server/wsmsg"
 	"net/http"
 	"sync"
 )
@@ -53,13 +56,17 @@ func handleConnections(c *gin.Context) {
 	})
 	//go wsWriter(ws, &writeMutex, connId)
 	for {
-		msgType, p, err := conn.ReadMessage()
+		_, p, err := conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		handler := handler2.CreateHandler(msgType)
-		handler.HandleMessage(conn, p)
+		var msg wsmsg.Packet
+		if err := proto.Unmarshal(p, &msg); err != nil {
+			fmt.Println("Error decoding Proto message:", err)
+			break
+		}
+		ws.Receive(conn, msg)
 	}
 }
 func addConn(conn *websocket.Conn, userID string) {

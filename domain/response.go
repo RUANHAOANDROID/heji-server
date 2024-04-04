@@ -7,7 +7,7 @@ const (
 
 type Response struct {
 	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
+	Msg  string      `json:"wsmsg"`
 	Data interface{} `json:"data,omitempty"`
 }
 
