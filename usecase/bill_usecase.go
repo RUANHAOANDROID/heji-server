@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"heji-server/domain"
-	"time"
 )
 
 type billUseCase struct {
@@ -26,6 +25,6 @@ func (b billUseCase) UpdateBill(c context.Context, bill *domain.Bill) error {
 	return b.repository.Update(c, bill)
 }
 
-func NewBillUseCase(br domain.BillRepository, timeout time.Duration) domain.BillUseCase {
+func NewBillUseCase(br domain.BillRepository) domain.BillUseCase {
 	return &billUseCase{br}
 }

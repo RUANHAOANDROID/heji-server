@@ -21,8 +21,10 @@ func registerRoutes(conf *config.Config, db mongo.Database) {
 }
 func NewWebSocket(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
 	ws := repository.NewMessagesRepository(db, domain.CollMessage)
+	buc := repository.NewBillRepository(db, domain.CollBill)
 	wsc := &controller.WSController{
 		MessageUseCase: usecase.NewMessageUseCase(ws),
+		BillUseCase:    usecase.NewBillUseCase(buc),
 	}
 	group.GET("/ws", wsc.Upgrade)
 }

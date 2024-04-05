@@ -10,7 +10,6 @@ import (
 	"heji-server/domain"
 	"heji-server/pkg"
 	"heji-server/wsmsg"
-	"log"
 	"net/http"
 	"sync"
 )
@@ -18,6 +17,7 @@ import (
 // WSController websocket 处理
 type WSController struct {
 	MessageUseCase domain.MessageUseCase
+	BillUseCase    domain.BillUseCase
 }
 
 var (
@@ -33,7 +33,7 @@ var (
 )
 
 func (wsc *WSController) Upgrade(ctx *gin.Context) {
-	userID := ctx.GetHeader("X-User-ID")
+	userID := getUserId(ctx)
 	if userID == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": "User ID is required"})
 		return
@@ -56,10 +56,16 @@ func (wsc *WSController) Upgrade(ctx *gin.Context) {
 		return err
 	})
 	//go wsWriter(ws, &writeMutex, connId)
+	msgChan := make(chan wsmsg.Packet)
+	go msgProcessor(msgChan, ctx, conn)
+	registerHandler(wsmsg.Type_ADD_BILL, &ws.AddBillHandler{BillUseCase: wsc.BillUseCase})
+	registerHandler(wsmsg.Type_DELETE_BILL, &ws.DeleteBillHandler{BillUseCase: wsc.BillUseCase})
 	for {
-		_, p, err := conn.ReadMessage()
+		//解析消息 msgType 为传输类型
+		msgType, p, err := conn.ReadMessage()
 		if err != nil {
-			log.Println(err)
+			pkg.Log.Println(msgType)
+			pkg.Log.Println(err)
 			return
 		}
 		var msg wsmsg.Packet
@@ -67,7 +73,7 @@ func (wsc *WSController) Upgrade(ctx *gin.Context) {
 			fmt.Println("Error decoding Proto message:", err)
 			break
 		}
-		ws.Receive(conn, &msg)
+		msgChan <- msg
 	}
 }
 
@@ -105,5 +111,25 @@ func broadcastMessage(message map[string]interface{}) {
 		if err != nil {
 			pkg.Log.Println(err)
 		}
+	}
+}
+
+// 处理器注册表
+var handlers = make(map[wsmsg.Type]ws.MessageHandler)
+
+// 注册处理器
+func registerHandler(msgType wsmsg.Type, handler ws.MessageHandler) {
+	handlers[msgType] = handler
+}
+
+// 处理消息的 Goroutine
+func msgProcessor(incomingMessages <-chan wsmsg.Packet, ctx *gin.Context, conn *websocket.Conn) {
+	for msg := range incomingMessages {
+		handler, ok := handlers[msg.Type]
+		if !ok {
+			fmt.Println("No handler registered for message type:", msg.Type)
+			continue
+		}
+		handler.HandleMessage(&msg, ctx, conn)
 	}
 }

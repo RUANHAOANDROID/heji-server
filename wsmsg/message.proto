@@ -1,9 +1,11 @@
 syntax = "proto3";
 
 option go_package = "../wsmsg";
-option java_package = "com.hao.heji.wsmsg";
+option java_package = "com.hao.heji.proto";
 
 package com.heji.proto;
+
+import "google/protobuf/any.proto";
 
 //消息类型
 enum Type {
@@ -16,8 +18,32 @@ enum Type {
 message Packet {
     string id = 1;
     Type type = 2;
-    uint64 timestamp = 3;
+    int64 timestamp = 3;
     string fromId = 4;
     repeated string toId = 5;
-    string content = 6;
+    repeated google.protobuf.Any content = 6;
+}
+// ACK状态
+enum AckStatus {
+    SUCCESS = 0;
+    FAILURE = 1;
+}
+//ACK 应答
+message Ack {
+    AckStatus status = 1;
+    string msg = 2;
+}
+message Bill {
+    string id = 1;
+    string book_id = 2;
+    string money = 3;
+    string category = 4;
+    string create_user = 5;
+    string create_time = 6;
+    string update_time = 7;
+    string remark = 8;
+    repeated string images = 9;
+}
+message DeleteBill {
+    string id = 1;
 }
