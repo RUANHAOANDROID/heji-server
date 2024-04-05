@@ -20,9 +20,11 @@ func registerRoutes(conf *config.Config, db mongo.Database) {
 	NewBookRouter(db, timeout, APIv1)
 }
 func NewWebSocket(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
-	group.GET("/ws", func(c *gin.Context) {
-		handleConnections(c)
-	})
+	ws := repository.NewMessagesRepository(db, domain.CollMessage)
+	wsc := &controller.WSController{
+		MessageUseCase: usecase.NewMessageUseCase(ws),
+	}
+	group.GET("/ws", wsc.Upgrade)
 }
 func NewUserRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db, domain.CollUser)

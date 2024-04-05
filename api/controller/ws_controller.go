@@ -1,4 +1,4 @@
-package api
+package controller
 
 import (
 	"errors"
@@ -7,10 +7,18 @@ import (
 	"github.com/gorilla/websocket"
 	"google.golang.org/protobuf/proto"
 	"heji-server/api/ws"
+	"heji-server/domain"
+	"heji-server/pkg"
 	"heji-server/wsmsg"
+	"log"
 	"net/http"
 	"sync"
 )
+
+// WSController websocket 处理
+type WSController struct {
+	MessageUseCase domain.MessageUseCase
+}
 
 var (
 	upgrader = websocket.Upgrader{
@@ -24,17 +32,17 @@ var (
 	clientsMutex sync.Mutex
 )
 
-func handleConnections(c *gin.Context) {
-	userID := c.GetHeader("X-User-ID")
+func (wsc *WSController) Upgrade(ctx *gin.Context) {
+	userID := ctx.GetHeader("X-User-ID")
 	if userID == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": "User ID is required"})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": "User ID is required"})
 		return
 	}
-	w := c.Writer
-	r := c.Request
+	w := ctx.Writer
+	r := ctx.Request
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		logger.Print("upgrade:", err)
+		pkg.Log.Print("upgrade:", err)
 		return
 	}
 	defer conn.Close()
@@ -62,6 +70,7 @@ func handleConnections(c *gin.Context) {
 		ws.Receive(conn, &msg)
 	}
 }
+
 func addConn(conn *websocket.Conn, userID string) {
 	clientsMutex.Lock()
 	clients[conn] = userID
@@ -82,7 +91,7 @@ func pushMessageToUser(userId string, messageType int, message []byte) {
 		if clientID == userId {
 			err := client.WriteMessage(messageType, message)
 			if err != nil {
-				logger.Println(err)
+				pkg.Log.Println(err)
 			}
 		}
 	}
@@ -94,7 +103,7 @@ func broadcastMessage(message map[string]interface{}) {
 	for client := range clients {
 		err := client.WriteJSON(message)
 		if err != nil {
-			logger.Println(err)
+			pkg.Log.Println(err)
 		}
 	}
 }

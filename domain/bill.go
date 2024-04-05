@@ -19,7 +19,7 @@ type Bill struct {
 }
 type BillUseCase interface {
 	SaveBill(c context.Context, bill *Bill) error
-	BillList(c context.Context, bill *[]Bill) error
+	BillList(c context.Context, bookId string, pageNumber, pageSize int64, bill *[]Bill) error
 	DeleteBill(c context.Context, billId string) error
 	UpdateBill(c context.Context, bill *Bill) error
 }
@@ -27,6 +27,6 @@ type BillUseCase interface {
 type BillRepository interface {
 	Save(c context.Context, bill *Bill) error
 	Delete(c context.Context, bid string) error
-	List(c context.Context, bookId string) (*[]Bill, error)
+	List(c context.Context, bookId string, pageNumber, pageSize int64, bills *[]Bill) error
 	Update(c context.Context, book *Bill) error
 }

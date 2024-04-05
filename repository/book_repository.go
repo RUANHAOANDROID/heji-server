@@ -24,12 +24,12 @@ func (b bookRepository) Delete(c context.Context, id primitive.ObjectID) error {
 
 func (b bookRepository) AddBookUser(c context.Context, bookId string, userId string) error {
 	coll := b.database.Collection(b.collection)
-	err := coll.FindOne(c, bson.M{"_id": bookId}).Decode(&book)
+	err := coll.FindOne(c, bson.M{book.TagsBson().ID: bookId}).Decode(&book)
 	if err != nil {
 		return err
 	}
 	book.Users = append(book.Users, userId)
-	_, err = coll.UpdateOne(c, bson.M{"_id": bookId}, book)
+	_, err = coll.UpdateOne(c, bson.M{book.TagsBson().ID: bookId}, book)
 	if err != nil {
 		return err
 	}

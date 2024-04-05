@@ -11,23 +11,19 @@ type billUseCase struct {
 }
 
 func (b billUseCase) SaveBill(c context.Context, bill *domain.Bill) error {
-	//TODO implement me
-	panic("implement me")
+	return b.repository.Save(c, bill)
 }
 
-func (b billUseCase) BillList(c context.Context, bill *[]domain.Bill) error {
-	//TODO implement me
-	panic("implement me")
+func (b billUseCase) BillList(c context.Context, bookId string, pageNumber, pageSize int64, bill *[]domain.Bill) error {
+	return b.repository.List(c, bookId, pageNumber, pageSize, bill)
 }
 
 func (b billUseCase) DeleteBill(c context.Context, billId string) error {
-	//TODO implement me
-	panic("implement me")
+	return b.repository.Delete(c, billId)
 }
 
 func (b billUseCase) UpdateBill(c context.Context, bill *domain.Bill) error {
-	//TODO implement me
-	panic("implement me")
+	return b.repository.Update(c, bill)
 }
 
 func NewBillUseCase(br domain.BillRepository, timeout time.Duration) domain.BillUseCase {
