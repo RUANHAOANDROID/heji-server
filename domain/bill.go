@@ -18,15 +18,15 @@ type Bill struct {
 	Images     []string           `bson:"images"json:"images"`
 }
 type BillUseCase interface {
-	SaveBill(c context.Context, book *Book) error
-	BillList(c context.Context, book *[]Book) error
-	DeleteBill(c context.Context, bookId string) error
-	UpdateBill(c context.Context, book *Book) error
+	SaveBill(c context.Context, bill *Bill) error
+	BillList(c context.Context, bill *[]Bill) error
+	DeleteBill(c context.Context, billId string) error
+	UpdateBill(c context.Context, bill *Bill) error
 }
 
 type BillRepository interface {
-	Save(c context.Context, book *Book) error
+	Save(c context.Context, bill *Bill) error
 	Delete(c context.Context, bid string) error
-	List(c context.Context, userId string) (*[]Book, error)
-	Update(c context.Context, book *Book) (*Book, error)
+	List(c context.Context, bookId string) (*[]Bill, error)
+	Update(c context.Context, book *Bill) error
 }

@@ -11,7 +11,7 @@ type billRepository struct {
 	collection string
 }
 
-func (b billRepository) Save(c context.Context, book *domain.Book) error {
+func (b billRepository) Save(c context.Context, bill *domain.Bill) error {
 	//TODO implement me
 	panic("implement me")
 }
@@ -21,12 +21,12 @@ func (b billRepository) Delete(c context.Context, bid string) error {
 	panic("implement me")
 }
 
-func (b billRepository) List(c context.Context, userId string) (*[]domain.Book, error) {
+func (b billRepository) List(c context.Context, bookId string) (*[]domain.Bill, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (b billRepository) Update(c context.Context, book *domain.Book) (*domain.Book, error) {
+func (b billRepository) Update(c context.Context, book *domain.Bill) error {
 	//TODO implement me
 	panic("implement me")
 }

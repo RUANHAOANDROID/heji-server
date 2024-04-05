@@ -10,22 +10,22 @@ type billUseCase struct {
 	repository domain.BillRepository
 }
 
-func (b billUseCase) SaveBill(c context.Context, book *domain.Book) error {
+func (b billUseCase) SaveBill(c context.Context, bill *domain.Bill) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (b billUseCase) BillList(c context.Context, book *[]domain.Book) error {
+func (b billUseCase) BillList(c context.Context, bill *[]domain.Bill) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (b billUseCase) DeleteBill(c context.Context, bookId string) error {
+func (b billUseCase) DeleteBill(c context.Context, billId string) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (b billUseCase) UpdateBill(c context.Context, book *domain.Book) error {
+func (b billUseCase) UpdateBill(c context.Context, bill *domain.Bill) error {
 	//TODO implement me
 	panic("implement me")
 }
