@@ -12,11 +12,11 @@ const (
 //go:generate go run github.com/wolfogre/gtag/cmd/gtag -types Message -tags bson .
 type Message struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
-	Type      string             `bson:"type"json:"type"`
-	Timestamp uint64             `bson:"timestamp"json:"timestamp"`
-	FromId    string             `bson:"from_id"json:"from_id"`
-	ToId      []string           `bson:"to_id"json:"to_id"`
-	Content   string             `bson:"content"json:"content"`
+	Type      string             `bson:"type" json:"type"`
+	Timestamp uint64             `bson:"timestamp" json:"timestamp"`
+	FromId    string             `bson:"from_id" json:"from_id"`
+	ToId      []string           `bson:"to_id" json:"to_id"`
+	Content   string             `bson:"content" json:"content"`
 }
 type MessageUseCase interface {
 	// SaveMessage 保存消息
