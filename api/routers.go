@@ -15,9 +15,14 @@ import (
 // registerRoutes configures the available web server routes.
 func registerRoutes(conf *config.Config, db mongo.Database) {
 	timeout := get.Config().Mongo.TimeoutMax
-	WebSocket(APIv1, conf)
+	NewWebSocket(db, timeout, APIv1)
 	NewUserRouter(db, timeout, APIv1)
 	NewBookRouter(db, timeout, APIv1)
+}
+func NewWebSocket(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
+	group.GET("/ws", func(c *gin.Context) {
+		handleConnections(c)
+	})
 }
 func NewUserRouter(db mongo.Database, timeout time.Duration, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db, domain.CollUser)

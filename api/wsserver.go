@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 	"google.golang.org/protobuf/proto"
 	"heji-server/api/ws"
-	"heji-server/config"
 	"heji-server/wsmsg"
 	"net/http"
 	"sync"
@@ -24,12 +23,6 @@ var (
 	clients      = make(map[*websocket.Conn]string)
 	clientsMutex sync.Mutex
 )
-
-func WebSocket(router *gin.RouterGroup, config *config.Config) {
-	router.GET("/ws", func(c *gin.Context) {
-		handleConnections(c)
-	})
-}
 
 func handleConnections(c *gin.Context) {
 	userID := c.GetHeader("X-User-ID")
@@ -66,7 +59,7 @@ func handleConnections(c *gin.Context) {
 			fmt.Println("Error decoding Proto message:", err)
 			break
 		}
-		ws.Receive(conn, msg)
+		ws.Receive(conn, &msg)
 	}
 }
 func addConn(conn *websocket.Conn, userID string) {

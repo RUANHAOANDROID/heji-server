@@ -33,6 +33,14 @@ var (
 	fieldOfBookCrtUserId, _ = typeOfBook.FieldByName("CrtUserId")
 	tagOfBookCrtUserId      = fieldOfBookCrtUserId.Tag
 
+	_                     = valueOfBook.CrtTime
+	fieldOfBookCrtTime, _ = typeOfBook.FieldByName("CrtTime")
+	tagOfBookCrtTime      = fieldOfBookCrtTime.Tag
+
+	_                     = valueOfBook.UpdTime
+	fieldOfBookUpdTime, _ = typeOfBook.FieldByName("UpdTime")
+	tagOfBookUpdTime      = fieldOfBookUpdTime.Tag
+
 	_                   = valueOfBook.Users
 	fieldOfBookUsers, _ = typeOfBook.FieldByName("Users")
 	tagOfBookUsers      = fieldOfBookUsers.Tag
@@ -44,11 +52,13 @@ var (
 
 // BookTags indicate tags of type Book
 type BookTags struct {
-	ID        string // `bson:"_id" json:"_id"`
+	ID        string // `bson:"_id,omitempty" json:"_id"`
 	Name      string // `bson:"name" json:"name"`
 	Type      string // `bson:"type" json:"type"`
 	Banner    string // `bson:"banner" json:"banner"`
 	CrtUserId string // `bson:"crt_user_id" json:"crt_user_id"`
+	CrtTime   string // `bson:"crt_time" json:"crt_time"`
+	UpdTime   string // `bson:"upd_time" json:"upd_time"`
 	Users     string // `bson:"users" json:"users"`
 	IsInitial string // `bson:"is_initial" json:"is_initial"`
 }
@@ -61,6 +71,8 @@ func (t *BookTags) Values() []string {
 		t.Type,
 		t.Banner,
 		t.CrtUserId,
+		t.CrtTime,
+		t.UpdTime,
 		t.Users,
 		t.IsInitial,
 	}
@@ -81,6 +93,8 @@ func (*Book) Tags(tag string, convert ...func(string) string) BookTags {
 		Type:      conv(tagOfBookType.Get(tag)),
 		Banner:    conv(tagOfBookBanner.Get(tag)),
 		CrtUserId: conv(tagOfBookCrtUserId.Get(tag)),
+		CrtTime:   conv(tagOfBookCrtTime.Get(tag)),
+		UpdTime:   conv(tagOfBookUpdTime.Get(tag)),
 		Users:     conv(tagOfBookUsers.Get(tag)),
 		IsInitial: conv(tagOfBookIsInitial.Get(tag)),
 	}

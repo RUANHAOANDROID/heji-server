@@ -2,14 +2,13 @@ package domain
 
 import (
 	"context"
-	"flag"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-var (
-	Types = flag.String("types", "", "struct types")
-	Tags  = flag.String("tags", "", "preset tags")
-)
+//var (
+//	Types = flag.String("types", "", "struct types")
+//	Tags  = flag.String("tags", "", "preset tags")
+//)
 
 const (
 	CollBook = "books" //mongo collection users
