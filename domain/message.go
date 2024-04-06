@@ -13,7 +13,7 @@ const (
 type Message struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	Type      string             `bson:"type" json:"type"`
-	Timestamp uint64             `bson:"timestamp" json:"timestamp"`
+	Timestamp int64              `bson:"timestamp" json:"timestamp"`
 	FromId    string             `bson:"from_id" json:"from_id"`
 	ToId      []string           `bson:"to_id" json:"to_id"`
 	Content   string             `bson:"content" json:"content"`

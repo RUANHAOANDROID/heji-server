@@ -25,6 +25,10 @@ var (
 	fieldOfBillMoney, _ = typeOfBill.FieldByName("Money")
 	tagOfBillMoney      = fieldOfBillMoney.Tag
 
+	_                  = valueOfBill.Type
+	fieldOfBillType, _ = typeOfBill.FieldByName("Type")
+	tagOfBillType      = fieldOfBillType.Tag
+
 	_                      = valueOfBill.Category
 	fieldOfBillCategory, _ = typeOfBill.FieldByName("Category")
 	tagOfBillCategory      = fieldOfBillCategory.Tag
@@ -52,15 +56,16 @@ var (
 
 // BillTags indicate tags of type Bill
 type BillTags struct {
-	ID         string // `bson:"_id,omitempty"json:"_id"`
+	ID         string // `bson:"_id,omitempty" json:"_id"`
 	BookId     string // `bson:"book_id" json:"book_id"`
 	Money      string // `bson:"money" json:"money"`
+	Type       string // `bson:"type" json:"type"`
 	Category   string // `bson:"category" json:"category"`
 	CreateUser string // `bson:"create_user" json:"create_user"`
-	CreateTime string // `bson:"create_time"json:"create_time"`
-	UpdateTime string // `bson:"update_time"json:"update_time"`
-	Remark     string // `bson:"remark"json:"remark"`
-	Images     string // `bson:"images"json:"images"`
+	CreateTime string // `bson:"create_time" json:"create_time"`
+	UpdateTime string // `bson:"update_time" json:"update_time"`
+	Remark     string // `bson:"remark" json:"remark"`
+	Images     string // `bson:"images" json:"images"`
 }
 
 // Values return all tags of Bill as slice
@@ -69,6 +74,7 @@ func (t *BillTags) Values() []string {
 		t.ID,
 		t.BookId,
 		t.Money,
+		t.Type,
 		t.Category,
 		t.CreateUser,
 		t.CreateTime,
@@ -91,6 +97,7 @@ func (*Bill) Tags(tag string, convert ...func(string) string) BillTags {
 		ID:         conv(tagOfBillID.Get(tag)),
 		BookId:     conv(tagOfBillBookId.Get(tag)),
 		Money:      conv(tagOfBillMoney.Get(tag)),
+		Type:       conv(tagOfBillType.Get(tag)),
 		Category:   conv(tagOfBillCategory.Get(tag)),
 		CreateUser: conv(tagOfBillCreateUser.Get(tag)),
 		CreateTime: conv(tagOfBillCreateTime.Get(tag)),

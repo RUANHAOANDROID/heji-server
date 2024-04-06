@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/protobuf/proto"
 	"heji-server/api/ws"
 	"heji-server/domain"
@@ -57,7 +58,7 @@ func (wsc *WSController) Upgrade(ctx *gin.Context) {
 	})
 	//go wsWriter(ws, &writeMutex, connId)
 	msgChan := make(chan wsmsg.Packet)
-	go msgProcessor(msgChan, ctx, conn)
+	go msgProcessor(msgChan, ctx, conn, wsc.MessageUseCase)
 	registerHandler(wsmsg.Type_ADD_BILL, &ws.AddBillHandler{BillUseCase: wsc.BillUseCase})
 	registerHandler(wsmsg.Type_DELETE_BILL, &ws.DeleteBillHandler{BillUseCase: wsc.BillUseCase})
 	for {
@@ -123,8 +124,21 @@ func registerHandler(msgType wsmsg.Type, handler ws.MessageHandler) {
 }
 
 // 处理消息的 Goroutine
-func msgProcessor(incomingMessages <-chan wsmsg.Packet, ctx *gin.Context, conn *websocket.Conn) {
-	for msg := range incomingMessages {
+func msgProcessor(packet <-chan wsmsg.Packet, ctx *gin.Context, conn *websocket.Conn, useCase domain.MessageUseCase) {
+	for msg := range packet {
+		oid, err := primitive.ObjectIDFromHex(msg.Id)
+		if err != nil {
+			pkg.Log.Println(err)
+		}
+		message := domain.Message{
+			ID:        oid,
+			Type:      msg.Type.String(),
+			Timestamp: msg.Timestamp,
+			FromId:    msg.FromId,
+			ToId:      msg.ToId,
+			Content:   msg.Content,
+		}
+		useCase.SaveMessage(ctx, &message)
 		handler, ok := handlers[msg.Type]
 		if !ok {
 			fmt.Println("No handler registered for message type:", msg.Type)
