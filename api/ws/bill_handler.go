@@ -23,7 +23,23 @@ func (h *AddBillHandler) HandleMessage(packet *wsmsg.Packet, ctx context.Context
 		if err != nil {
 			pkg.Log.Println(err)
 		}
-		h.BillUseCase.SaveBill(ctx, &bill)
+		err = h.BillUseCase.SaveBill(ctx, &bill)
+		if err != nil {
+			ackPacket := &wsmsg.Packet{
+				Id:      packet.Id,
+				Type:    wsmsg.Type_ADD_BILL_ACK,
+				Content: bill.ID.Hex(),
+			}
+			bytes, err := SerializeMessage(ackPacket)
+			if err != nil {
+				pkg.Log.Println(err)
+				return
+			}
+			err = conn.WriteMessage(websocket.BinaryMessage, bytes)
+			if err != nil {
+				pkg.Log.Println(err)
+			}
+		}
 	}
 }
 

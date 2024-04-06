@@ -57,7 +57,7 @@ func (wsc *WSController) Upgrade(ctx *gin.Context) {
 		return err
 	})
 	//go wsWriter(ws, &writeMutex, connId)
-	msgChan := make(chan wsmsg.Packet)
+	msgChan := make(chan *wsmsg.Packet)
 	go msgProcessor(msgChan, ctx, conn, wsc.MessageUseCase)
 	registerHandler(wsmsg.Type_ADD_BILL, &ws.AddBillHandler{BillUseCase: wsc.BillUseCase})
 	registerHandler(wsmsg.Type_DELETE_BILL, &ws.DeleteBillHandler{BillUseCase: wsc.BillUseCase})
@@ -74,7 +74,7 @@ func (wsc *WSController) Upgrade(ctx *gin.Context) {
 			fmt.Println("Error decoding Proto message:", err)
 			break
 		}
-		msgChan <- msg
+		msgChan <- &msg
 	}
 }
 
@@ -123,27 +123,34 @@ func registerHandler(msgType wsmsg.Type, handler ws.MessageHandler) {
 	handlers[msgType] = handler
 }
 
-// 处理消息的 Goroutine
-func msgProcessor(packet <-chan wsmsg.Packet, ctx *gin.Context, conn *websocket.Conn, useCase domain.MessageUseCase) {
+// msgProcessor 处理消息的 Goroutine
+func msgProcessor(packet <-chan *wsmsg.Packet, ctx *gin.Context, conn *websocket.Conn, useCase domain.MessageUseCase) {
 	for msg := range packet {
+		pkg.Log.Println(&msg)
 		oid, err := primitive.ObjectIDFromHex(msg.Id)
 		if err != nil {
 			pkg.Log.Println(err)
 		}
-		message := domain.Message{
-			ID:        oid,
-			Type:      msg.Type.String(),
-			Timestamp: msg.Timestamp,
-			FromId:    msg.FromId,
-			ToId:      msg.ToId,
-			Content:   msg.Content,
+		//多人消息先存储后转发,单人账本不需要存储消息仅仅备份账本到mongo
+		if len(msg.GetToId()) > 0 {
+			message := &domain.Message{
+				ID:        oid,
+				Type:      msg.Type.String(),
+				Timestamp: msg.Timestamp,
+				FromId:    msg.FromId,
+				ToId:      msg.ToId,
+				Content:   msg.Content,
+			}
+			err = useCase.SaveMessage(ctx, message)
+			if err != nil {
+				pkg.Log.Println(err)
+			}
 		}
-		useCase.SaveMessage(ctx, &message)
 		handler, ok := handlers[msg.Type]
 		if !ok {
-			fmt.Println("No handler registered for message type:", msg.Type)
+			fmt.Println("No handler registered for message type:", &msg.Type)
 			continue
 		}
-		handler.HandleMessage(&msg, ctx, conn)
+		handler.HandleMessage(msg, ctx, conn)
 	}
 }

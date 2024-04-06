@@ -7,18 +7,19 @@ package com.heji.proto;
 
 //消息类型
 enum Type {
-    ACK_OK = 0;
-    ACK_ERR = 1;
-    ADD_BILL = 2;
-    DELETE_BILL = 3;
-    UPDATE_BILL = 4;
+  ADD_BILL = 0;
+  ADD_BILL_ACK = 1;
+  DELETE_BILL = 2;
+  DELETE_BILL_ACK = 3;
+  UPDATE_BILL = 4;
+  UPDATE_BILL_ACK = 5;
 }
 //消息体
 message Packet {
-    string id = 1;
-    Type type = 2;
-    int64 timestamp = 3;
-    string fromId = 4;
-    repeated string toId = 5;
-    string content = 6;
+  string id = 1;
+  Type type = 2;
+  int64 timestamp = 3;
+  string fromId = 4;
+  repeated string toId = 5;
+  string content = 6;
 }

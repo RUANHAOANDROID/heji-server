@@ -11,16 +11,17 @@ const (
 
 //go:generate go run github.com/wolfogre/gtag/cmd/gtag -types Bill -tags bson .
 type Bill struct {
-	ID         primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
-	BookId     primitive.ObjectID `bson:"book_id" json:"book_id"`
-	Money      string             `bson:"money" json:"money"`
-	Type       int                `bson:"type" json:"type"`
-	Category   string             `bson:"category" json:"category"`
-	CreateUser string             `bson:"create_user" json:"create_user"`
-	CreateTime int64              `bson:"create_time" json:"create_time"`
-	UpdateTime int64              `bson:"update_time" json:"update_time"`
-	Remark     string             `bson:"remark" json:"remark"`
-	Images     []string           `bson:"images" json:"images"`
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
+	BookId   primitive.ObjectID `bson:"book_id" json:"book_id"`
+	Money    string             `bson:"money" json:"money"`
+	Type     int                `bson:"type" json:"type"`
+	Category string             `bson:"category" json:"category"`
+	CrtUser  string             `bson:"crt_user" json:"crt_user"`
+	Time     string             `bson:"time" json:"time"` //产生时间
+	CrtTime  int64              `bson:"crt_time" json:"crt_time"`
+	UpdTime  int64              `bson:"upd_time" json:"upd_time"`
+	Remark   string             `bson:"remark" json:"remark"`
+	Images   []string           `bson:"images" json:"images"`
 }
 type BillUseCase interface {
 	SaveBill(c context.Context, bill *Bill) error

@@ -33,17 +33,21 @@ var (
 	fieldOfBillCategory, _ = typeOfBill.FieldByName("Category")
 	tagOfBillCategory      = fieldOfBillCategory.Tag
 
-	_                        = valueOfBill.CreateUser
-	fieldOfBillCreateUser, _ = typeOfBill.FieldByName("CreateUser")
-	tagOfBillCreateUser      = fieldOfBillCreateUser.Tag
+	_                     = valueOfBill.CrtUser
+	fieldOfBillCrtUser, _ = typeOfBill.FieldByName("CrtUser")
+	tagOfBillCrtUser      = fieldOfBillCrtUser.Tag
 
-	_                        = valueOfBill.CreateTime
-	fieldOfBillCreateTime, _ = typeOfBill.FieldByName("CreateTime")
-	tagOfBillCreateTime      = fieldOfBillCreateTime.Tag
+	_                  = valueOfBill.Time
+	fieldOfBillTime, _ = typeOfBill.FieldByName("Time")
+	tagOfBillTime      = fieldOfBillTime.Tag
 
-	_                        = valueOfBill.UpdateTime
-	fieldOfBillUpdateTime, _ = typeOfBill.FieldByName("UpdateTime")
-	tagOfBillUpdateTime      = fieldOfBillUpdateTime.Tag
+	_                     = valueOfBill.CrtTime
+	fieldOfBillCrtTime, _ = typeOfBill.FieldByName("CrtTime")
+	tagOfBillCrtTime      = fieldOfBillCrtTime.Tag
+
+	_                     = valueOfBill.UpdTime
+	fieldOfBillUpdTime, _ = typeOfBill.FieldByName("UpdTime")
+	tagOfBillUpdTime      = fieldOfBillUpdTime.Tag
 
 	_                    = valueOfBill.Remark
 	fieldOfBillRemark, _ = typeOfBill.FieldByName("Remark")
@@ -56,16 +60,17 @@ var (
 
 // BillTags indicate tags of type Bill
 type BillTags struct {
-	ID         string // `bson:"_id,omitempty" json:"_id"`
-	BookId     string // `bson:"book_id" json:"book_id"`
-	Money      string // `bson:"money" json:"money"`
-	Type       string // `bson:"type" json:"type"`
-	Category   string // `bson:"category" json:"category"`
-	CreateUser string // `bson:"create_user" json:"create_user"`
-	CreateTime string // `bson:"create_time" json:"create_time"`
-	UpdateTime string // `bson:"update_time" json:"update_time"`
-	Remark     string // `bson:"remark" json:"remark"`
-	Images     string // `bson:"images" json:"images"`
+	ID       string // `bson:"_id,omitempty" json:"_id"`
+	BookId   string // `bson:"book_id" json:"book_id"`
+	Money    string // `bson:"money" json:"money"`
+	Type     string // `bson:"type" json:"type"`
+	Category string // `bson:"category" json:"category"`
+	CrtUser  string // `bson:"crt_user" json:"crt_user"`
+	Time     string // `bson:"time" json:"time"`
+	CrtTime  string // `bson:"crt_time" json:"crt_time"`
+	UpdTime  string // `bson:"upd_time" json:"upd_time"`
+	Remark   string // `bson:"remark" json:"remark"`
+	Images   string // `bson:"images" json:"images"`
 }
 
 // Values return all tags of Bill as slice
@@ -76,9 +81,10 @@ func (t *BillTags) Values() []string {
 		t.Money,
 		t.Type,
 		t.Category,
-		t.CreateUser,
-		t.CreateTime,
-		t.UpdateTime,
+		t.CrtUser,
+		t.Time,
+		t.CrtTime,
+		t.UpdTime,
 		t.Remark,
 		t.Images,
 	}
@@ -94,16 +100,17 @@ func (*Bill) Tags(tag string, convert ...func(string) string) BillTags {
 		conv = func(in string) string { return in }
 	}
 	return BillTags{
-		ID:         conv(tagOfBillID.Get(tag)),
-		BookId:     conv(tagOfBillBookId.Get(tag)),
-		Money:      conv(tagOfBillMoney.Get(tag)),
-		Type:       conv(tagOfBillType.Get(tag)),
-		Category:   conv(tagOfBillCategory.Get(tag)),
-		CreateUser: conv(tagOfBillCreateUser.Get(tag)),
-		CreateTime: conv(tagOfBillCreateTime.Get(tag)),
-		UpdateTime: conv(tagOfBillUpdateTime.Get(tag)),
-		Remark:     conv(tagOfBillRemark.Get(tag)),
-		Images:     conv(tagOfBillImages.Get(tag)),
+		ID:       conv(tagOfBillID.Get(tag)),
+		BookId:   conv(tagOfBillBookId.Get(tag)),
+		Money:    conv(tagOfBillMoney.Get(tag)),
+		Type:     conv(tagOfBillType.Get(tag)),
+		Category: conv(tagOfBillCategory.Get(tag)),
+		CrtUser:  conv(tagOfBillCrtUser.Get(tag)),
+		Time:     conv(tagOfBillTime.Get(tag)),
+		CrtTime:  conv(tagOfBillCrtTime.Get(tag)),
+		UpdTime:  conv(tagOfBillUpdTime.Get(tag)),
+		Remark:   conv(tagOfBillRemark.Get(tag)),
+		Images:   conv(tagOfBillImages.Get(tag)),
 	}
 }
 
