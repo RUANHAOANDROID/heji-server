@@ -26,6 +26,7 @@ func Setup(conf *config.Config, db mongo.Database) {
 	router.Use(middleware.Cors())
 	router.Use(middleware.ErrorHandler())
 	router.Use(middleware.JwtAuth(conf.Jwt.Secret))
+	router.Use(gin.Recovery())
 	APIv1 = router.Group(config.ApiUri)
 	registerRoutes(conf, db)
 
